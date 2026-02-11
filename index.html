@@ -420,6 +420,9 @@
     position: relative;
     height: 340px;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .breaker img {
@@ -427,6 +430,8 @@
     height: 100%;
     object-fit: cover;
     object-position: center;
+    position: absolute;
+    inset: 0;
   }
 
   .breaker::before {
@@ -435,7 +440,7 @@
     top: 0; left: 0; right: 0;
     height: 60px;
     background: linear-gradient(to bottom, var(--cream), transparent);
-    z-index: 1;
+    z-index: 2;
     pointer-events: none;
   }
 
@@ -445,8 +450,40 @@
     bottom: 0; left: 0; right: 0;
     height: 60px;
     background: linear-gradient(to top, var(--deep), transparent);
-    z-index: 1;
+    z-index: 2;
     pointer-events: none;
+  }
+
+  .breaker-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(42, 37, 32, 0.45);
+    z-index: 1;
+  }
+
+  .breaker-quote {
+    position: relative;
+    z-index: 3;
+    max-width: 600px;
+    padding: 0 2rem;
+    text-align: center;
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-style: italic;
+    line-height: 1.5;
+    color: white;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .breaker-quote .breaker-author {
+    display: block;
+    margin-top: 0.8rem;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-style: normal;
+    font-weight: 400;
+    color: var(--amber-soft);
+    letter-spacing: 0.04em;
   }
 
   /* ─── QUOTES ─── */
@@ -1145,7 +1182,8 @@
     .succes-quote { padding: 2rem 1.5rem; }
     .succes-quote p { font-size: 1.3rem; }
     .aanpak-kernwaarden { padding: 1.5rem; }
-    .breaker { height: 220px; }
+    .breaker { height: 280px; }
+    .breaker-quote { font-size: 1.2rem; }
     .footer-inner { flex-direction: column; gap: 1rem; text-align: center; }
 
     /* Hamburger menu */
@@ -1194,7 +1232,8 @@
   @media (max-width: 480px) {
     .hero h1 { font-size: 2rem; }
     .hero-buttons { flex-direction: column; align-items: center; }
-    .breaker { height: 180px; }
+    .breaker { height: 260px; }
+    .breaker-quote { font-size: 1.05rem; padding: 0 1.2rem; }
     .quiz-overlay { padding: 0.5rem; }
     .quiz-modal { max-height: 96vh; border-radius: 8px; }
   }
@@ -1244,12 +1283,15 @@
       </div>
       <div class="fade-in">
         <div class="section-label">Over Pepijn</div>
-        <div class="section-title">Nog in te vullen door Pepijn</div>
+        <div class="section-title">Van podium naar coaching</div>
         <p class="section-text">
-          Hier komt een kort, persoonlijk verhaal van Pepijn. Wie is hij, waar komt hij vandaan, waarom doet hij dit werk? Geen cv, maar een eerlijk stukje achtergrond dat vertrouwen en herkenning wekt.
+          Pepijn staat al jaren op het podium als zanger en performer, onder andere met Boys Harmony and Soul en het ZO! Gospel Choir. Hij stond op grote podia, werkte met artiesten als Berget Lewis en Shirma Rouse, en was te zien bij De Wereld Draait Door en X-Factor. Die ervaring leerde hem hoe spannend en kwetsbaar het kan zijn om voor een publiek te staan — maar ook hoe krachtig het is wanneer stem, verhaal en intentie samenvallen.
         </p>
-        <p class="section-text" style="color: var(--stone); font-style: italic; font-size: 0.9rem;">
-          Drie tot vijf zinnen is genoeg. Het gaat erom dat de bezoeker een mens ziet, niet een dienstverlener.
+        <p class="section-text">
+          De bewuste stap van Amsterdam naar Oldeberkoop markeerde een keuze voor meer aandacht, rust en echte ontmoeting. Vanuit die houding begeleidt Pepijn mensen bij het vinden van hun eigen stem en aanwezigheid — zonder trucjes of vaste formats, maar met persoonlijke aandacht en praktische handvatten.
+        </p>
+        <p class="section-text" style="font-family: var(--serif); font-size: 1.1rem; color: var(--deep); margin-top: 0.5rem;">
+          Voor hem begint goed spreken bij jezelf durven zijn: helder, ontspannen en met vertrouwen.
         </p>
       </div>
     </div>
@@ -1303,6 +1345,8 @@
 <!-- BREAKER -->
 <div class="breaker">
   <img src="beeldmateriaal/breaker.png" alt="Handen in gesprek" />
+  <div class="breaker-overlay"></div>
+  <p class="breaker-quote fade-in">"Mijn fascinatie ligt niet bij het spreken zelf, maar bij wat er gebeurt wanneer iemand zich werkelijk durft uit te drukken."<span class="breaker-author">— Pepijn</span></p>
 </div>
 
 <!-- QUOTES -->
