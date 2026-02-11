@@ -1663,7 +1663,7 @@
     });
   });
 
-  function qSubmit() {
+  async function qSubmit() {
     const ok = [
       qValidate('qVoornaam', /^[a-zA-ZÀ-ÿ\s'\-]{2,}$/, 'Vul een geldige voornaam in'),
       qValidate('qAchternaam', /^[a-zA-ZÀ-ÿ\s'\-]{2,}$/, 'Vul een geldige achternaam in'),
@@ -1677,19 +1677,58 @@
       const tel = document.getElementById('qTelefoon').value.trim();
       const em = document.getElementById('qEmail').value.trim();
 
-      document.getElementById('qThanksName').textContent = vn;
-      document.getElementById('qThanksSummary').innerHTML = `
-        <p><strong>Verstuurd door:</strong> ${vn} ${an}</p>
-        <p><strong>E-mail:</strong> ${em}</p>
-        <p><strong>Telefoon:</strong> ${tel}</p>
-        <p style="margin-top:0.6rem"><strong>Situatie:</strong> ${qAnswers.situatie}</p>
-        <p><strong>Herkenning:</strong> ${qAnswers.gevoel}</p>
-        <p><strong>Omgang:</strong> ${qAnswers.omgang}</p>
-        <p><strong>Wens:</strong> ${qAnswers.wens}</p>`;
+      // Verzamel alle data
+      const quizData = {
+        voornaam: vn,
+        achternaam: an,
+        email: em,
+        telefoon: tel,
+        situatie: qAnswers.situatie,
+        gevoel: qAnswers.gevoel,
+        omgang: qAnswers.omgang,
+        wens: qAnswers.wens,
+        timestamp: new Date().toISOString()
+      };
 
-      qStep = 6;
-      document.getElementById('qProgress').style.width = '100%';
-      qShowStep('q-thanks');
+      // Verstuur naar Wix
+      // VERVANG DEZE URL MET JE WIX HTTP FUNCTION ENDPOINT
+      const WIX_ENDPOINT = 'https://JOUW-SITE.wixsite.com/_functions/saveQuizData';
+      
+      try {
+        const response = await fetch(WIX_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(quizData)
+        });
+
+        if (!response.ok) {
+          throw new Error('Verzenden mislukt');
+        }
+
+        const result = await response.json();
+        console.log('Data verzonden:', result);
+
+        // Toon bedankpagina
+        document.getElementById('qThanksName').textContent = vn;
+        document.getElementById('qThanksSummary').innerHTML = `
+          <p><strong>Verstuurd door:</strong> ${vn} ${an}</p>
+          <p><strong>E-mail:</strong> ${em}</p>
+          <p><strong>Telefoon:</strong> ${tel}</p>
+          <p style="margin-top:0.6rem"><strong>Situatie:</strong> ${qAnswers.situatie}</p>
+          <p><strong>Herkenning:</strong> ${qAnswers.gevoel}</p>
+          <p><strong>Omgang:</strong> ${qAnswers.omgang}</p>
+          <p><strong>Wens:</strong> ${qAnswers.wens}</p>`;
+
+        qStep = 6;
+        document.getElementById('qProgress').style.width = '100%';
+        qShowStep('q-thanks');
+
+      } catch (error) {
+        console.error('Fout bij verzenden:', error);
+        alert('Er ging iets mis bij het verzenden. Probeer het later opnieuw of neem direct contact op via pepijnja@gmail.com');
+      }
     }
   }
 </script>
