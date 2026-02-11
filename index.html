@@ -1691,7 +1691,7 @@
       telefoon: document.getElementById('cfTelefoon').value.trim(),
       email: document.getElementById('cfEmail').value.trim(),
       bron: 'contactformulier',
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toLocaleString('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', '')
     };
 
     try {
@@ -1925,7 +1925,7 @@
         gevoel: qAnswers.gevoel,
         omgang: qAnswers.omgang,
         wens: qAnswers.wens,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toLocaleString('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', '')
       };
 
       // Verstuur naar Google Sheets
