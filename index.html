@@ -275,43 +275,6 @@
     transform: translateY(-2px);
   }
 
-  .hero-form {
-    margin-top: 1.5rem;
-  }
-  .hero-form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.7rem;
-    margin-bottom: 1rem;
-  }
-  .hero-form input {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1.5px solid rgba(42, 37, 32, 0.2);
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.7);
-    font-family: var(--sans);
-    font-size: 0.88rem;
-    color: var(--deep);
-    transition: border-color 0.3s;
-    box-sizing: border-box;
-  }
-  .hero-form input::placeholder { color: var(--stone); }
-  .hero-form input:focus {
-    outline: none;
-    border-color: var(--terracotta);
-  }
-  .hero-form .hero-cta {
-    width: 100%;
-  }
-  .hero-form-success {
-    text-align: center;
-    padding: 1.5rem 0;
-    color: var(--deep);
-    font-family: var(--serif);
-    font-size: 1.15rem;
-  }
-
   /* ─── SECTIONS ─── */
   section { padding: 6.5rem 2rem; }
   .container { max-width: 820px; margin: 0 auto; }
@@ -450,11 +413,6 @@
     padding-top: 1.5rem;
     font-style: italic;
     color: var(--stone);
-  }
-
-  .vaardigheden-quiz-cta {
-    text-align: center;
-    margin-top: 2rem;
   }
 
   /* ─── BREAKER ─── */
@@ -1216,7 +1174,6 @@
     .hero h1 { font-size: 2.4rem; }
     .hero { min-height: 90vh; padding: 7rem 1.5rem 4rem; }
     .hero-content { padding: 2rem 1.5rem; }
-    .hero-form-grid { grid-template-columns: 1fr; }
     section { padding: 4.5rem 1.5rem; }
     .section-title { font-size: 1.85rem; }
     .over-grid { grid-template-columns: 1fr; gap: 2.5rem; }
@@ -1310,15 +1267,10 @@
   <div class="hero-content">
     <h1>Leren spreken met meer <span class="highlight">rust</span>, helderheid en vertrouwen</h1>
     <p>Presentatie- en sprekerscoaching. Individueel, in groepen, op locatie of online.</p>
-    <form class="hero-form" id="heroForm" onsubmit="submitHeroForm(event)">
-      <div class="hero-form-grid">
-        <input type="text" id="hfVoornaam" placeholder="Voornaam" required />
-        <input type="text" id="hfAchternaam" placeholder="Achternaam" required />
-        <input type="tel" id="hfTelefoon" placeholder="Telefoonnummer" required />
-        <input type="email" id="hfEmail" placeholder="E-mailadres" required />
-      </div>
-      <button type="submit" class="hero-cta">Neem contact op</button>
-    </form>
+    <div class="hero-buttons">
+      <button class="hero-cta" onclick="openQuiz()">Herken jij dit? Doe de test</button>
+      <a href="#contact" class="hero-cta-secondary">Neem contact op</a>
+    </div>
   </div>
 </section>
 
@@ -1387,9 +1339,6 @@
       </div>
     </div>
     <p class="vaardigheden-afsluit fade-in">Alles wat we oefenen is direct toepasbaar — in werk, projecten en persoonlijke situaties.</p>
-    <div class="vaardigheden-quiz-cta fade-in">
-      <button class="hero-cta" onclick="openQuiz()">Herken jij dit? Doe de test</button>
-    </div>
   </div>
 </section>
 
@@ -1642,36 +1591,6 @@
 
 
 <script>
-  // ─── HERO CONTACTFORMULIER ───
-  async function submitHeroForm(e) {
-    e.preventDefault();
-    const form = document.getElementById('heroForm');
-    const btn = form.querySelector('button[type="submit"]');
-    btn.disabled = true;
-    btn.textContent = 'Verzenden...';
-
-    const data = {
-      voornaam: document.getElementById('hfVoornaam').value.trim(),
-      achternaam: document.getElementById('hfAchternaam').value.trim(),
-      telefoon: document.getElementById('hfTelefoon').value.trim(),
-      email: document.getElementById('hfEmail').value.trim(),
-      bron: 'contactformulier',
-      timestamp: new Date().toISOString()
-    };
-
-    try {
-      await fetch('https://script.google.com/macros/s/AKfycbyQ-QMN2OnFA93GLDSTmxIaLxBZbs0ajP3jfaY8ibhbNQfs8UDwFRGNaWrzRN1s0hJXBg/exec', {
-        method: 'POST',
-        body: JSON.stringify(data)
-      });
-      form.innerHTML = '<div class="hero-form-success">Bedankt ' + data.voornaam + '! We nemen snel contact met je op.</div>';
-    } catch (error) {
-      btn.disabled = false;
-      btn.textContent = 'Neem contact op';
-      alert('Er ging iets mis. Probeer het opnieuw of mail naar pepijnja@gmail.com');
-    }
-  }
-
   // ─── HAMBURGER MENU ───
   function toggleMenu() {
     document.getElementById('navMenu').classList.toggle('open');
