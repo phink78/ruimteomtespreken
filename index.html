@@ -1812,22 +1812,14 @@
         timestamp: new Date().toISOString()
       };
 
-      // Verstuur naar Wix
-      // VERVANG DEZE URL MET JE WIX HTTP FUNCTION ENDPOINT
-      const WIX_ENDPOINT = 'https://www.ruimteomtespreken.nl/_functions/saveQuizData';
-      
+      // Verstuur naar Google Sheets
+      const SHEETS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyQ-QMN2OnFA93GLDSTmxIaLxBZbs0ajP3jfaY8ibhbNQfs8UDwFRGNaWrzRN1s0hJXBg/exec';
+
       try {
-        const response = await fetch(WIX_ENDPOINT, {
+        const response = await fetch(SHEETS_ENDPOINT, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
           body: JSON.stringify(quizData)
         });
-
-        if (!response.ok) {
-          throw new Error('Verzenden mislukt');
-        }
 
         const result = await response.json();
         console.log('Data verzonden:', result);
