@@ -25,6 +25,59 @@
 <meta name="twitter:description" content="Leren spreken met meer rust, helderheid en vertrouwen. Coaching door Pepijn Jansen.">
 <meta name="twitter:image" content="https://ruimteomtespreken.nl/beeldmateriaal/hero.png">
 
+<!-- Extra meta -->
+<meta name="theme-color" content="#FAF8F4">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Ruimte om te spreken",
+  "description": "Presentatie- en sprekerscoaching door Pepijn Jansen. Individueel, in groepen, op locatie of online.",
+  "url": "https://ruimteomtespreken.nl",
+  "image": "https://ruimteomtespreken.nl/beeldmateriaal/hero.png",
+  "telephone": "+31624733544",
+  "email": "pepijnja@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Schuinpad 34",
+    "addressLocality": "Oldeberkoop",
+    "postalCode": "8421 PX",
+    "addressRegion": "Friesland",
+    "addressCountry": "NL"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 52.938,
+    "longitude": 6.105
+  },
+  "founder": {
+    "@type": "Person",
+    "name": "Pepijn Jansen",
+    "jobTitle": "Presentatie- en sprekerscoach"
+  },
+  "areaServed": "NL",
+  "serviceType": ["Presentatiecoaching", "Sprekerscoaching", "Communicatietraining"],
+  "sameAs": [
+    "https://www.linkedin.com/in/pepijnjansen1/",
+    "https://www.instagram.com/pepijntisan",
+    "https://facebook.com/pepijn.jansen.5"
+  ]
+}
+</script>
+
+<!-- Performance -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://script.google.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Nunito+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -1330,6 +1383,7 @@
   </div>
 </nav>
 
+<main>
 <!-- HERO -->
 <section class="hero" id="hero">
   <div class="hero-bg">
@@ -1350,7 +1404,7 @@
   <div class="container">
     <div class="over-grid">
       <div class="over-photo-wrapper fade-in">
-        <img src="beeldmateriaal/pepijn-portrait.png" alt="Pepijn" class="over-photo" />
+        <img src="beeldmateriaal/pepijn-portrait.png" alt="Pepijn Jansen, presentatie- en sprekerscoach uit Oldeberkoop" class="over-photo" loading="lazy" />
       </div>
       <div class="fade-in">
         <div class="section-label">Over Pepijn</div>
@@ -1421,7 +1475,7 @@
 
 <!-- BREAKER -->
 <div class="breaker">
-  <img src="beeldmateriaal/breaker.png" alt="Handen in gesprek" />
+  <img src="beeldmateriaal/breaker.png" alt="Handen in gesprek" loading="lazy" />
   <div class="breaker-overlay"></div>
   <p class="breaker-quote fade-in">"Mijn fascinatie ligt niet bij het spreken zelf, maar bij wat er gebeurt wanneer iemand zich werkelijk durft uit te drukken."<span class="breaker-author">— Pepijn</span></p>
 </div>
@@ -1470,7 +1524,7 @@
 <!-- CONTACT -->
 <section class="contact" id="contact">
   <div class="contact-bg">
-    <img src="beeldmateriaal/village.png" alt="Oldeberkoop" />
+    <img src="beeldmateriaal/village.png" alt="Oldeberkoop" loading="lazy" />
   </div>
   <div class="container">
     <div class="section-label fade-in">Contact</div>
@@ -1506,10 +1560,10 @@
       <p>Liever direct een bericht achterlaten? Vul je gegevens in en Pepijn neemt contact met je op.</p>
       <form id="contactForm" onsubmit="submitContactForm(event)">
         <div class="contact-form-grid">
-          <input type="text" id="cfVoornaam" placeholder="Voornaam" required />
-          <input type="text" id="cfAchternaam" placeholder="Achternaam" required />
-          <input type="tel" id="cfTelefoon" placeholder="Telefoonnummer" required />
-          <input type="email" id="cfEmail" placeholder="E-mailadres" required />
+          <input type="text" id="cfVoornaam" placeholder="Voornaam" aria-label="Voornaam" required />
+          <input type="text" id="cfAchternaam" placeholder="Achternaam" aria-label="Achternaam" required />
+          <input type="tel" id="cfTelefoon" placeholder="Telefoonnummer" aria-label="Telefoonnummer" required />
+          <input type="email" id="cfEmail" placeholder="E-mailadres" aria-label="E-mailadres" required />
         </div>
         <button type="submit" class="contact-form-btn">Verstuur</button>
       </form>
@@ -1517,6 +1571,7 @@
 
   </div>
 </section>
+</main>
 
 <!-- FOOTER -->
 <footer>
