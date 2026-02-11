@@ -112,6 +112,34 @@
   }
   nav .nav-cta:hover { background: var(--terracotta); color: white; }
 
+  /* ─── HAMBURGER ─── */
+  .hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 101;
+  }
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--deep);
+    margin: 5px 0;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  .hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
   /* ─── HERO ─── */
   .hero {
     min-height: 100vh;
@@ -155,6 +183,11 @@
     position: relative;
     z-index: 1;
     animation: fadeUp 1s ease-out;
+    background: rgba(242, 239, 232, 0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    padding: 2.5rem 3rem;
+    border-radius: 18px;
   }
 
   .hero h1 {
@@ -164,7 +197,6 @@
     line-height: 1.22;
     color: var(--deep);
     margin-bottom: 1.5rem;
-    text-shadow: 0 1px 30px rgba(250, 248, 244, 0.6);
   }
 
   .hero h1 .highlight {
@@ -190,7 +222,6 @@
     max-width: 520px;
     margin: 0 auto 2.5rem;
     line-height: 1.8;
-    text-shadow: 0 1px 20px rgba(250, 248, 244, 0.8);
   }
 
   .hero-buttons {
@@ -227,21 +258,20 @@
     display: inline-block;
     padding: 0.95rem 2.5rem;
     background: transparent;
-    color: var(--deep);
+    color: var(--terracotta);
     text-decoration: none;
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: 0.04em;
     border-radius: 3px;
     transition: all 0.3s ease;
-    border: 1.5px solid rgba(42, 37, 32, 0.3);
+    border: 1.5px solid var(--terracotta);
     cursor: pointer;
     font-family: var(--sans);
-    text-shadow: 0 1px 20px rgba(250, 248, 244, 0.8);
   }
   .hero-cta-secondary:hover {
-    border-color: var(--amber);
-    background: rgba(250, 248, 244, 0.5);
+    background: var(--terracotta);
+    color: white;
     transform: translateY(-2px);
   }
 
@@ -1106,6 +1136,7 @@
     html { font-size: 16px; }
     .hero h1 { font-size: 2.4rem; }
     .hero { min-height: 90vh; padding: 7rem 1.5rem 4rem; }
+    .hero-content { padding: 2rem 1.5rem; }
     section { padding: 4.5rem 1.5rem; }
     .section-title { font-size: 1.85rem; }
     .over-grid { grid-template-columns: 1fr; gap: 2.5rem; }
@@ -1113,11 +1144,45 @@
     .vaardigheid-item { grid-template-columns: 1fr; gap: 0.5rem; }
     .succes-quote { padding: 2rem 1.5rem; }
     .succes-quote p { font-size: 1.3rem; }
-    nav ul { gap: 1.2rem; }
-    nav a { font-size: 0.78rem; }
     .aanpak-kernwaarden { padding: 1.5rem; }
     .breaker { height: 220px; }
     .footer-inner { flex-direction: column; gap: 1rem; text-align: center; }
+
+    /* Hamburger menu */
+    .hamburger { display: block; }
+    nav ul {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      background: rgba(250, 248, 244, 0.96);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 1.5rem 2rem;
+      gap: 0;
+      border-bottom: 1px solid rgba(221, 215, 203, 0.4);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+    nav ul.open { display: flex; }
+    nav ul li { width: 100%; }
+    nav ul li a {
+      display: block;
+      padding: 0.85rem 0;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--deep);
+      border-bottom: 1px solid rgba(221, 215, 203, 0.3);
+    }
+    nav ul li:last-child a { border-bottom: none; }
+    nav .nav-cta {
+      background: none;
+      padding: 0.85rem 0;
+      font-size: 1rem;
+      color: var(--terracotta) !important;
+      font-weight: 600;
+    }
 
     .quiz-modal { padding: 2rem 1.5rem 1.5rem; border-radius: 10px; }
     .q-title { font-size: 1.35rem; }
@@ -1127,8 +1192,6 @@
   }
 
   @media (max-width: 480px) {
-    nav .nav-inner { flex-direction: column; gap: 0.8rem; }
-    nav ul { gap: 1rem; flex-wrap: wrap; justify-content: center; }
     .hero h1 { font-size: 2rem; }
     .hero-buttons { flex-direction: column; align-items: center; }
     .breaker { height: 180px; }
@@ -1143,11 +1206,16 @@
 <nav>
   <div class="nav-inner">
     <a href="#hero" class="logo">Ruimte om te spreken</a>
-    <ul>
-      <li><a href="#over">Over Pepijn</a></li>
-      <li><a href="#aanpak">Aanpak</a></li>
-      <li><a href="#vaardigheden">Vaardigheden</a></li>
-      <li><a href="#contact" class="nav-cta">Contact</a></li>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul id="navMenu">
+      <li><a href="#over" onclick="closeMenu()">Over Pepijn</a></li>
+      <li><a href="#aanpak" onclick="closeMenu()">Aanpak</a></li>
+      <li><a href="#vaardigheden" onclick="closeMenu()">Vaardigheden</a></li>
+      <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
     </ul>
   </div>
 </nav>
@@ -1479,6 +1547,16 @@
 
 
 <script>
+  // ─── HAMBURGER MENU ───
+  function toggleMenu() {
+    document.getElementById('navMenu').classList.toggle('open');
+    document.querySelector('.hamburger').classList.toggle('active');
+  }
+  function closeMenu() {
+    document.getElementById('navMenu').classList.remove('open');
+    document.querySelector('.hamburger').classList.remove('active');
+  }
+
   // ─── SCROLL ANIMATIONS ───
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
