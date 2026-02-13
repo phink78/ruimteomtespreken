@@ -786,6 +786,69 @@
     font-size: 1.1rem;
   }
 
+  /* ─── OFFERTE ─── */
+  .offerte {
+    background: var(--warm-white);
+  }
+  .offerte-form {
+    max-width: 600px;
+    margin-top: 2.5rem;
+  }
+  .offerte-form .form-row {
+    margin-bottom: 0.8rem;
+  }
+  .offerte-form input,
+  .offerte-form select,
+  .offerte-form textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--sand);
+    border-radius: 4px;
+    background: white;
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    color: var(--deep);
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+  }
+  .offerte-form input::placeholder,
+  .offerte-form textarea::placeholder { color: var(--stone); }
+  .offerte-form input:focus,
+  .offerte-form select:focus,
+  .offerte-form textarea:focus {
+    outline: none;
+    border-color: var(--terracotta);
+  }
+  .offerte-form select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235C554A' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+  }
+  .offerte-form textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  .offerte-form .form-hint {
+    font-size: 0.78rem;
+    color: var(--stone);
+    margin-top: 0.25rem;
+  }
+  .offerte-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
+  .offerte-success {
+    padding: 1.5rem 0;
+    color: var(--deep);
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
   /* Quiz CTA in contact section */
   .contact-quiz-cta {
     margin-top: 2.5rem;
@@ -1351,6 +1414,7 @@
     .contact-quiz-cta { padding: 2rem 1.5rem; }
     .contact-form-block { padding: 2rem 1.5rem; }
     .contact-form-grid { grid-template-columns: 1fr; }
+    .offerte-form-grid { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 480px) {
@@ -1518,6 +1582,43 @@
     <div class="succes-quote fade-in">
       <p>Het doel is dat je je verhaal op jouw eigen manier durft te dragen.</p>
     </div>
+  </div>
+</section>
+
+<!-- OFFERTE -->
+<section class="offerte" id="offerte">
+  <div class="container">
+    <div class="section-label fade-in">Vrijblijvend contact</div>
+    <div class="section-title fade-in">Een gesprek begint met een vraag.</div>
+    <p class="section-text fade-in">Elke situatie is anders, daarom werk ik niet met standaardtarieven. Vertel me kort waar je tegenaan loopt of wat je zoekt, dan denk ik graag vrijblijvend met je mee. Soms is een enkel gesprek al genoeg om richting te vinden.</p>
+
+    <form class="offerte-form fade-in" id="offerteForm" onsubmit="submitOfferteForm(event)">
+      <div class="offerte-form-grid">
+        <div class="form-row">
+          <input type="text" id="ofNaam" placeholder="Naam" aria-label="Naam" required />
+        </div>
+        <div class="form-row">
+          <input type="email" id="ofEmail" placeholder="E-mailadres" aria-label="E-mailadres" required />
+        </div>
+      </div>
+      <div class="form-row">
+        <input type="tel" id="ofTelefoon" placeholder="Telefoonnummer (optioneel)" aria-label="Telefoonnummer" />
+        <div class="form-hint">Handig als je liever gebeld wordt</div>
+      </div>
+      <div class="form-row">
+        <select id="ofOnderwerp" aria-label="Waar gaat het om?" required>
+          <option value="" disabled selected>Waar gaat het om?</option>
+          <option value="Individuele coaching (presentatie, spreken, stem)">Individuele coaching (presentatie, spreken, stem)</option>
+          <option value="Groepssessie of workshop">Groepssessie of workshop</option>
+          <option value="Sessie voor een team of organisatie">Sessie voor een team of organisatie</option>
+          <option value="Iets anders — ik leg het graag uit">Iets anders — ik leg het graag uit</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <textarea id="ofToelichting" placeholder="Vertel kort wat je zoekt of waar je tegenaan loopt. Geen roman nodig — een paar zinnen is prima." aria-label="Korte toelichting"></textarea>
+      </div>
+      <button type="submit" class="contact-form-btn">Verstuur je vraag</button>
+    </form>
   </div>
 </section>
 
@@ -1732,6 +1833,37 @@
 
 
 <script>
+  // ─── OFFERTE FORMULIER ───
+  async function submitOfferteForm(e) {
+    e.preventDefault();
+    var form = document.getElementById('offerteForm');
+    var btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Verzenden...';
+
+    var data = {
+      type: 'offerte',
+      naam: document.getElementById('ofNaam').value.trim(),
+      email: document.getElementById('ofEmail').value.trim(),
+      telefoon: document.getElementById('ofTelefoon').value.trim(),
+      onderwerp: document.getElementById('ofOnderwerp').value,
+      toelichting: document.getElementById('ofToelichting').value.trim(),
+      timestamp: new Date().toLocaleString('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', '')
+    };
+
+    try {
+      await fetch('https://script.google.com/macros/s/AKfycbz6nf9FvE5WOcIu_XzhMG7S_-yDUsMosK0wswLSKcCIYgA65ITSLW0x7_41Y95X6xz0xw/exec', {
+        method: 'POST',
+        body: JSON.stringify(data)
+      });
+      form.innerHTML = '<div class="offerte-success">Dankjewel voor je bericht. Pepijn neemt zo snel mogelijk persoonlijk contact met je op. Geen verplichtingen — gewoon een gesprek.</div>';
+    } catch (error) {
+      btn.disabled = false;
+      btn.textContent = 'Verstuur je vraag';
+      alert('Er ging iets mis. Probeer het opnieuw of mail naar pepijnja@gmail.com');
+    }
+  }
+
   // ─── CONTACTFORMULIER ───
   async function submitContactForm(e) {
     e.preventDefault();
