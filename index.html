@@ -841,12 +841,28 @@
     gap: 0.8rem;
     margin-bottom: 0.8rem;
   }
-  .offerte-success {
-    padding: 1.5rem 0;
-    color: var(--deep);
-    font-family: var(--serif);
-    font-size: 1.1rem;
-    line-height: 1.6;
+  .offerte-toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--deep);
+    color: white;
+    padding: 1.2rem 2rem;
+    border-radius: 10px;
+    font-family: var(--sans);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    max-width: 500px;
+    text-align: center;
+    z-index: 200;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .offerte-toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 
   /* Quiz CTA in contact section */
@@ -1856,12 +1872,30 @@
         method: 'POST',
         body: JSON.stringify(data)
       });
-      form.innerHTML = '<div class="offerte-success">Dankjewel voor je bericht. Pepijn neemt zo snel mogelijk persoonlijk contact met je op. Geen verplichtingen — gewoon een gesprek.</div>';
+      form.reset();
+      document.getElementById('ofOnderwerp').selectedIndex = 0;
+      btn.disabled = false;
+      btn.textContent = 'Verstuur je vraag';
+      showOfferteToast('Dankjewel voor je bericht. Pepijn neemt zo snel mogelijk persoonlijk contact met je op.');
     } catch (error) {
       btn.disabled = false;
       btn.textContent = 'Verstuur je vraag';
       alert('Er ging iets mis. Probeer het opnieuw of mail naar pepijnja@gmail.com');
     }
+  }
+
+  function showOfferteToast(msg) {
+    var toast = document.createElement('div');
+    toast.className = 'offerte-toast';
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    requestAnimationFrame(function() {
+      toast.classList.add('visible');
+    });
+    setTimeout(function() {
+      toast.classList.remove('visible');
+      setTimeout(function() { toast.remove(); }, 400);
+    }, 7000);
   }
 
   // ─── CONTACTFORMULIER ───
