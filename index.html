@@ -39,6 +39,11 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:type" content="image/png">
 
+<!-- Hreflang -->
+<link rel="alternate" hreflang="nl" href="https://ruimteomtespreken.nl">
+<link rel="alternate" hreflang="en" href="https://ruimteomtespreken.nl?lang=en">
+<link rel="alternate" hreflang="x-default" href="https://ruimteomtespreken.nl">
+
 <!-- Favicon -->
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/favicon.png">
@@ -120,7 +125,10 @@
     line-height: 1.7;
     font-weight: 300;
     -webkit-font-smoothing: antialiased;
+    opacity: 0;
+    transition: opacity 0.15s ease;
   }
+  body.i18n-ready { opacity: 1; }
 
   /* ─── NAV ─── */
   nav {
@@ -161,6 +169,29 @@
     transition: color 0.3s;
   }
   nav a:hover { color: var(--terracotta); }
+
+  .lang-switch {
+    background: none;
+    border: 1.5px solid var(--sand);
+    border-radius: 4px;
+    padding: 0.35rem 0.8rem;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--earth);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: all 0.3s;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+  .lang-switch:hover {
+    border-color: var(--amber);
+    color: var(--deep);
+  }
+  .lang-flag { font-size: 1rem; line-height: 1; }
 
   nav .nav-cta {
     padding: 0.55rem 1.4rem;
@@ -1430,6 +1461,13 @@
       color: var(--terracotta) !important;
       font-weight: 600;
     }
+    nav ul .lang-switch {
+      margin-top: 0.5rem;
+      border: 1.5px solid var(--sand);
+      justify-content: center;
+      padding: 0.7rem 0;
+      font-size: 0.95rem;
+    }
 
     .quiz-modal { padding: 2rem 1.5rem 1.5rem; border-radius: 10px; }
     .q-title { font-size: 1.35rem; }
@@ -1463,10 +1501,11 @@
       <span></span>
     </button>
     <ul id="navMenu">
-      <li><a href="#over" onclick="closeMenu()">Over Pepijn</a></li>
-      <li><a href="#aanpak" onclick="closeMenu()">Aanpak</a></li>
-      <li><a href="#vaardigheden" onclick="closeMenu()">Vaardigheden</a></li>
-      <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+      <li><a href="#over" onclick="closeMenu()" data-i18n="nav.over">Over Pepijn</a></li>
+      <li><a href="#aanpak" onclick="closeMenu()" data-i18n="nav.aanpak">Aanpak</a></li>
+      <li><a href="#vaardigheden" onclick="closeMenu()" data-i18n="nav.vaardigheden">Vaardigheden</a></li>
+      <li><a href="#contact" onclick="closeMenu()" data-i18n="nav.contact">Contact</a></li>
+      <li><button class="lang-switch" onclick="i18n.toggleLanguage(); closeMenu();"><span class="lang-flag">🇬🇧</span> EN</button></li>
     </ul>
   </div>
 </nav>
@@ -1475,14 +1514,14 @@
 <!-- HERO -->
 <section class="hero" id="hero">
   <div class="hero-bg">
-    <img src="beeldmateriaal/hero.png" alt="Coulisselandschap bij ochtendlicht" />
+    <img src="beeldmateriaal/hero.png" data-i18n-alt="hero.img_alt" alt="Coulisselandschap bij ochtendlicht" />
   </div>
   <div class="hero-content">
-    <h1>Leren spreken met meer <span class="highlight">rust</span>, helderheid en vertrouwen</h1>
-    <p>Presentatie- en sprekerscoaching. Individueel, in groepen, op locatie of online.</p>
+    <h1 data-i18n-html="hero.title">Leren spreken met meer <span class="highlight">rust</span>, helderheid en vertrouwen</h1>
+    <p data-i18n="hero.subtitle">Presentatie- en sprekerscoaching. Individueel, in groepen, op locatie of online.</p>
     <div class="hero-buttons">
-      <button class="hero-cta" onclick="openQuiz()">Herken jij dit? Doe de test</button>
-      <a href="#contact" class="hero-cta-secondary">Neem contact op</a>
+      <button class="hero-cta" onclick="openQuiz()" data-i18n="hero.cta_quiz">Herken jij dit? Doe de test</button>
+      <a href="#contact" class="hero-cta-secondary" data-i18n="hero.cta_contact">Neem contact op</a>
     </div>
   </div>
 </section>
@@ -1492,18 +1531,18 @@
   <div class="container">
     <div class="over-grid">
       <div class="over-photo-wrapper fade-in">
-        <img src="beeldmateriaal/pepijn-portrait.png" alt="Pepijn Jansen, presentatie- en sprekerscoach uit Oldeberkoop" class="over-photo" loading="lazy" />
+        <img src="beeldmateriaal/pepijn-portrait.png" data-i18n-alt="over.img_alt" alt="Pepijn Jansen, presentatie- en sprekerscoach uit Oldeberkoop" class="over-photo" loading="lazy" />
       </div>
       <div class="fade-in">
-        <div class="section-label">Over Pepijn</div>
-        <div class="section-title">Van podium naar coaching</div>
-        <p class="section-text">
+        <div class="section-label" data-i18n="over.label">Over Pepijn</div>
+        <div class="section-title" data-i18n="over.title">Van podium naar coaching</div>
+        <p class="section-text" data-i18n="over.text1">
           Pepijn staat al jaren op het podium als zanger en performer, onder andere met Boys Harmony and Soul en het ZO! Gospel Choir. Hij stond op grote podia, werkte met artiesten als Berget Lewis en Shirma Rouse, en was te zien bij De Wereld Draait Door en X-Factor. Die ervaring leerde hem hoe spannend en kwetsbaar het kan zijn om voor een publiek te staan — maar ook hoe krachtig het is wanneer stem, verhaal en intentie samenvallen.
         </p>
-        <p class="section-text">
+        <p class="section-text" data-i18n="over.text2">
           De bewuste stap van Amsterdam naar Oldeberkoop markeerde een keuze voor meer aandacht, rust en echte ontmoeting. Vanuit die houding begeleidt Pepijn mensen bij het vinden van hun eigen stem en aanwezigheid — zonder trucjes of vaste formats, maar met persoonlijke aandacht en praktische handvatten.
         </p>
-        <p class="section-text" style="font-family: var(--serif); font-size: 1.1rem; color: var(--deep); margin-top: 0.5rem;">
+        <p class="section-text" style="font-family: var(--serif); font-size: 1.1rem; color: var(--deep); margin-top: 0.5rem;" data-i18n="over.text3">
           Voor Pepijn begint goed spreken bij jezelf durven zijn: helder, ontspannen en met vertrouwen.
         </p>
       </div>
@@ -1514,83 +1553,83 @@
 <!-- AANPAK -->
 <section class="aanpak" id="aanpak">
   <div class="container">
-    <div class="section-label fade-in">Aanpak</div>
-    <div class="section-title fade-in">Persoonlijk, praktisch en op jouw tempo</div>
-    <p class="section-text fade-in">Of je nu alleen wilt werken of met een groep — de kern is altijd hetzelfde: persoonlijke aandacht, praktische oefeningen en ruimte om te ontdekken wat voor jou werkt.</p>
-    <p class="section-text fade-in">Bij individuele sessies starten we met een korte intake: waar sta je, wat wil je bereiken en in welke situaties loop je vast? Vanuit daar werken we gericht aan stem, presentatie en aanwezigheid, afgestemd op jouw persoonlijke doelen.</p>
-    <p class="section-text fade-in">In groepssessies ligt de focus op gezamenlijke ontwikkeling, herkenning en uitwisseling. Deelnemers leren van elkaar, oefenen met echte situaties en ervaren hoe kleine veranderingen in stem en houding direct invloed hebben op hoe een verhaal overkomt.</p>
-    <div class="aanpak-kernwaarden fade-in">Geen vaste formats, maar maatwerk. Werken met echte teksten en situaties. Aandacht voor stem, lichaam en verhaal. En altijd een veilige setting waarin je jezelf kunt zijn.</div>
-    <p class="aanpak-locatie fade-in"><span class="pin">📍</span> Sessies en workshops vinden plaats in Oldeberkoop, op locatie of online.</p>
+    <div class="section-label fade-in" data-i18n="aanpak.label">Aanpak</div>
+    <div class="section-title fade-in" data-i18n="aanpak.title">Persoonlijk, praktisch en op jouw tempo</div>
+    <p class="section-text fade-in" data-i18n="aanpak.text1">Of je nu alleen wilt werken of met een groep — de kern is altijd hetzelfde: persoonlijke aandacht, praktische oefeningen en ruimte om te ontdekken wat voor jou werkt.</p>
+    <p class="section-text fade-in" data-i18n="aanpak.text2">Bij individuele sessies starten we met een korte intake: waar sta je, wat wil je bereiken en in welke situaties loop je vast? Vanuit daar werken we gericht aan stem, presentatie en aanwezigheid, afgestemd op jouw persoonlijke doelen.</p>
+    <p class="section-text fade-in" data-i18n="aanpak.text3">In groepssessies ligt de focus op gezamenlijke ontwikkeling, herkenning en uitwisseling. Deelnemers leren van elkaar, oefenen met echte situaties en ervaren hoe kleine veranderingen in stem en houding direct invloed hebben op hoe een verhaal overkomt.</p>
+    <div class="aanpak-kernwaarden fade-in" data-i18n="aanpak.kernwaarden">Geen vaste formats, maar maatwerk. Werken met echte teksten en situaties. Aandacht voor stem, lichaam en verhaal. En altijd een veilige setting waarin je jezelf kunt zijn.</div>
+    <p class="aanpak-locatie fade-in"><span class="pin">📍</span> <span data-i18n="aanpak.locatie">Sessies en workshops vinden plaats in Oldeberkoop, op locatie of online.</span></p>
   </div>
 </section>
 
 <!-- VAARDIGHEDEN -->
 <section class="vaardigheden" id="vaardigheden">
   <div class="container">
-    <div class="section-label fade-in">Vaardigheden</div>
-    <div class="section-title fade-in">Waar we aan werken</div>
+    <div class="section-label fade-in" data-i18n="vaard.label">Vaardigheden</div>
+    <div class="section-title fade-in" data-i18n="vaard.title">Waar we aan werken</div>
     <div class="vaardigheid-grid">
       <div class="vaardigheid-item fade-in">
-        <div class="vaardigheid-naam"><span class="vaardigheid-dot"></span> Stemgebruik</div>
-        <div class="vaardigheid-tekst">Ontdek hoe je stem vrijer, steviger en natuurlijker kan klinken — met aandacht voor ademhaling, klank, tempo en articulatie.</div>
+        <div class="vaardigheid-naam"><span class="vaardigheid-dot"></span> <span data-i18n="vaard.naam1">Stemgebruik</span></div>
+        <div class="vaardigheid-tekst" data-i18n="vaard.tekst1">Ontdek hoe je stem vrijer, steviger en natuurlijker kan klinken — met aandacht voor ademhaling, klank, tempo en articulatie.</div>
       </div>
       <div class="vaardigheid-item fade-in">
-        <div class="vaardigheid-naam"><span class="vaardigheid-dot"></span> Presentatie &amp; verhaal</div>
-        <div class="vaardigheid-tekst">We brengen structuur aan in wat je wilt vertellen, zodat je boodschap helder wordt. Voor jezelf én voor je publiek.</div>
+        <div class="vaardigheid-naam"><span class="vaardigheid-dot"></span> <span data-i18n="vaard.naam2">Presentatie &amp; verhaal</span></div>
+        <div class="vaardigheid-tekst" data-i18n="vaard.tekst2">We brengen structuur aan in wat je wilt vertellen, zodat je boodschap helder wordt. Voor jezelf én voor je publiek.</div>
       </div>
       <div class="vaardigheid-item fade-in">
-        <div class="vaardigheid-naam"><span class="vaardigheid-dot"></span> Lichaamstaal &amp; aanwezigheid</div>
-        <div class="vaardigheid-tekst">Hoe sta je, hoe beweeg je, hoe neem je ruimte in? In elke sessie wordt zichtbaar hoeveel impact kleine aanpassingen kunnen hebben.</div>
+        <div class="vaardigheid-naam"><span class="vaardigheid-dot"></span> <span data-i18n="vaard.naam3">Lichaamstaal &amp; aanwezigheid</span></div>
+        <div class="vaardigheid-tekst" data-i18n="vaard.tekst3">Hoe sta je, hoe beweeg je, hoe neem je ruimte in? In elke sessie wordt zichtbaar hoeveel impact kleine aanpassingen kunnen hebben.</div>
       </div>
       <div class="vaardigheid-item fade-in">
-        <div class="vaardigheid-naam"><span class="vaardigheid-dot"></span> Omgaan met spanning</div>
-        <div class="vaardigheid-tekst">Zenuwen horen erbij. Je leert hoe je ze kunt gebruiken in plaats van bestrijden — zodat spreken minder energie kost.</div>
+        <div class="vaardigheid-naam"><span class="vaardigheid-dot"></span> <span data-i18n="vaard.naam4">Omgaan met spanning</span></div>
+        <div class="vaardigheid-tekst" data-i18n="vaard.tekst4">Zenuwen horen erbij. Je leert hoe je ze kunt gebruiken in plaats van bestrijden — zodat spreken minder energie kost.</div>
       </div>
       <div class="vaardigheid-item fade-in">
-        <div class="vaardigheid-naam"><span class="vaardigheid-dot"></span> Authentiek communiceren</div>
-        <div class="vaardigheid-tekst">Geen aangeleerde trucjes of rolletjes, maar spreken vanuit jezelf. Dat zorgt voor verbinding en geloofwaardigheid.</div>
+        <div class="vaardigheid-naam"><span class="vaardigheid-dot"></span> <span data-i18n="vaard.naam5">Authentiek communiceren</span></div>
+        <div class="vaardigheid-tekst" data-i18n="vaard.tekst5">Geen aangeleerde trucjes of rolletjes, maar spreken vanuit jezelf. Dat zorgt voor verbinding en geloofwaardigheid.</div>
       </div>
     </div>
-    <p class="vaardigheden-afsluit fade-in">Alles wat we oefenen is direct toepasbaar — in werk, projecten en persoonlijke situaties.</p>
+    <p class="vaardigheden-afsluit fade-in" data-i18n="vaard.afsluit">Alles wat we oefenen is direct toepasbaar — in werk, projecten en persoonlijke situaties.</p>
 
     <div class="contact-quiz-cta fade-in">
-      <h3>Herken jij dit?</h3>
-      <p>Ontdek in vier korte vragen wat spreken voor jou lastig maakt — en wat je eraan kunt doen.</p>
-      <button class="quiz-open-btn" onclick="openQuiz()">Doe de test →</button>
+      <h3 data-i18n="quiz_cta.title">Herken jij dit?</h3>
+      <p data-i18n="quiz_cta.text">Ontdek in vier korte vragen wat spreken voor jou lastig maakt — en wat je eraan kunt doen.</p>
+      <button class="quiz-open-btn" onclick="openQuiz()" data-i18n="quiz_cta.btn">Doe de test →</button>
     </div>
   </div>
 </section>
 
 <!-- BREAKER -->
 <div class="breaker">
-  <img src="beeldmateriaal/breaker.png" alt="Handen in gesprek" loading="lazy" />
+  <img src="beeldmateriaal/breaker.png" data-i18n-alt="breaker.img_alt" alt="Handen in gesprek" loading="lazy" />
   <div class="breaker-overlay"></div>
-  <p class="breaker-quote fade-in">"Mijn fascinatie ligt niet bij het spreken zelf, maar bij wat er gebeurt wanneer iemand zich werkelijk durft uit te drukken."<span class="breaker-author">— Pepijn</span></p>
+  <p class="breaker-quote fade-in"><span data-i18n="breaker.quote">"Mijn fascinatie ligt niet bij het spreken zelf, maar bij wat er gebeurt wanneer iemand zich werkelijk durft uit te drukken."</span><span class="breaker-author" data-i18n="breaker.author">— Pepijn</span></p>
 </div>
 
 <!-- QUOTES -->
 <section class="quotes" id="quotes">
   <div class="container-wide">
-    <div class="section-label fade-in">Over samenwerken met Pepijn</div>
-    <div class="section-title fade-in">Wat mensen zeggen</div>
+    <div class="section-label fade-in" data-i18n="quotes.label">Over samenwerken met Pepijn</div>
+    <div class="section-title fade-in" data-i18n="quotes.title">Wat mensen zeggen</div>
     <div class="quotes-grid">
       <div class="quote-card fade-in">
         <div class="quote-mark">"</div>
-        <p class="quote-text">Wat mij altijd opviel is de rust die Pepijn uitstraalt in gesprekken. Hij heeft een prettige stem en weet met zijn manier van communiceren aandacht vast te houden. Die rust en helderheid maken dat mensen graag naar hem luisteren.</p>
-        <div class="quote-author">Anne Speets</div>
-        <div class="quote-role">Voormalig collega</div>
+        <p class="quote-text" data-i18n="quotes.text1">Wat mij altijd opviel is de rust die Pepijn uitstraalt in gesprekken. Hij heeft een prettige stem en weet met zijn manier van communiceren aandacht vast te houden. Die rust en helderheid maken dat mensen graag naar hem luisteren.</p>
+        <div class="quote-author" data-i18n="quotes.author1">Anne Speets</div>
+        <div class="quote-role" data-i18n="quotes.role1">Voormalig collega</div>
       </div>
       <div class="quote-card fade-in">
         <div class="quote-mark">"</div>
-        <p class="quote-text">Wat Pepijn doet is niet praten om iets te bereiken. Hij spreekt en laat ruimte. En in die ruimte gebeurt altijd iets echts.</p>
-        <div class="quote-author">Danny van Kessel</div>
-        <div class="quote-role">Muziekvriend / bandlid BHS</div>
+        <p class="quote-text" data-i18n="quotes.text2">Wat Pepijn doet is niet praten om iets te bereiken. Hij spreekt en laat ruimte. En in die ruimte gebeurt altijd iets echts.</p>
+        <div class="quote-author" data-i18n="quotes.author2">Danny van Kessel</div>
+        <div class="quote-role" data-i18n="quotes.role2">Muziekvriend / bandlid BHS</div>
       </div>
       <div class="quote-card fade-in">
         <div class="quote-mark">"</div>
-        <p class="quote-text">Pepijn is glashelder en to the point, maar altijd met oprechte aandacht voor de ander. Hij voelt aan wat iemand nodig heeft en weet precies de juiste toon te raken. Zijn manier van communiceren schept vertrouwen en zorgt dat mensen zich op hun gemak voelen.</p>
-        <div class="quote-author">Julian Zuidinga</div>
-        <div class="quote-role">Vriend / voormalig collega</div>
+        <p class="quote-text" data-i18n="quotes.text3">Pepijn is glashelder en to the point, maar altijd met oprechte aandacht voor de ander. Hij voelt aan wat iemand nodig heeft en weet precies de juiste toon te raken. Zijn manier van communiceren schept vertrouwen en zorgt dat mensen zich op hun gemak voelen.</p>
+        <div class="quote-author" data-i18n="quotes.author3">Julian Zuidinga</div>
+        <div class="quote-role" data-i18n="quotes.role3">Vriend / voormalig collega</div>
       </div>
     </div>
   </div>
@@ -1599,12 +1638,12 @@
 <!-- SUCCES -->
 <section class="succes" id="succes">
   <div class="container">
-    <div class="section-label fade-in">Resultaat</div>
-    <div class="section-title fade-in">Wat deelnemers ervaren</div>
-    <p class="section-text fade-in">Succes betekent voor mij niet 'perfect presenteren'. Succes is dat jij met meer vertrouwen spreekt, duidelijker communiceert en met meer plezier je verhaal deelt.</p>
-    <p class="succes-resultaten fade-in">Deelnemers ervaren na sessies en workshops vaak: meer rust en overzicht tijdens het spreken. Meer vertrouwen in hun eigen verhaal. Een stem die steviger en vrijer klinkt. Betere verbinding met publiek of collega's. En meer plezier in presenteren en samenwerken.</p>
+    <div class="section-label fade-in" data-i18n="succes.label">Resultaat</div>
+    <div class="section-title fade-in" data-i18n="succes.title">Wat deelnemers ervaren</div>
+    <p class="section-text fade-in" data-i18n="succes.text">Succes betekent voor mij niet 'perfect presenteren'. Succes is dat jij met meer vertrouwen spreekt, duidelijker communiceert en met meer plezier je verhaal deelt.</p>
+    <p class="succes-resultaten fade-in" data-i18n="succes.resultaten">Deelnemers ervaren na sessies en workshops vaak: meer rust en overzicht tijdens het spreken. Meer vertrouwen in hun eigen verhaal. Een stem die steviger en vrijer klinkt. Betere verbinding met publiek of collega's. En meer plezier in presenteren en samenwerken.</p>
     <div class="succes-quote fade-in">
-      <p>Het doel is dat je je verhaal op jouw eigen manier durft te dragen.</p>
+      <p data-i18n="succes.quote">Het doel is dat je je verhaal op jouw eigen manier durft te dragen.</p>
     </div>
   </div>
 </section>
@@ -1612,36 +1651,36 @@
 <!-- OFFERTE -->
 <section class="offerte" id="offerte">
   <div class="container">
-    <div class="section-label fade-in">Vrijblijvend contact</div>
-    <div class="section-title fade-in">Een gesprek begint met een vraag.</div>
-    <p class="section-text fade-in">Elke situatie is anders, daarom werk ik niet met standaardtarieven. Vertel me kort waar je tegenaan loopt of wat je zoekt, dan denk ik graag vrijblijvend met je mee. Soms is een enkel gesprek al genoeg om richting te vinden.</p>
+    <div class="section-label fade-in" data-i18n="offerte.label">Vrijblijvend contact</div>
+    <div class="section-title fade-in" data-i18n="offerte.title">Een gesprek begint met een vraag.</div>
+    <p class="section-text fade-in" data-i18n="offerte.text">Elke situatie is anders, daarom werk ik niet met standaardtarieven. Vertel me kort waar je tegenaan loopt of wat je zoekt, dan denk ik graag vrijblijvend met je mee. Soms is een enkel gesprek al genoeg om richting te vinden.</p>
 
     <form class="offerte-form fade-in" id="offerteForm" onsubmit="submitOfferteForm(event)">
       <div class="offerte-form-grid">
         <div class="form-row">
-          <input type="text" id="ofNaam" placeholder="Naam" aria-label="Naam" required />
+          <input type="text" id="ofNaam" data-i18n-placeholder="offerte.naam_ph" data-i18n-aria="offerte.naam_ph" placeholder="Naam" aria-label="Naam" required />
         </div>
         <div class="form-row">
-          <input type="email" id="ofEmail" placeholder="E-mailadres" aria-label="E-mailadres" required />
+          <input type="email" id="ofEmail" data-i18n-placeholder="offerte.email_ph" data-i18n-aria="offerte.email_ph" placeholder="E-mailadres" aria-label="E-mailadres" required />
         </div>
       </div>
       <div class="form-row">
-        <input type="tel" id="ofTelefoon" placeholder="Telefoonnummer (optioneel)" aria-label="Telefoonnummer" />
-        <div class="form-hint">Handig als je liever gebeld wordt</div>
+        <input type="tel" id="ofTelefoon" data-i18n-placeholder="offerte.telefoon_ph" data-i18n-aria="offerte.telefoon_ph" placeholder="Telefoonnummer (optioneel)" aria-label="Telefoonnummer" />
+        <div class="form-hint" data-i18n="offerte.telefoon_hint">Handig als je liever gebeld wordt</div>
       </div>
       <div class="form-row">
         <select id="ofOnderwerp" aria-label="Waar gaat het om?" required>
-          <option value="" disabled selected>Waar gaat het om?</option>
-          <option value="Individuele coaching (presentatie, spreken, stem)">Individuele coaching (presentatie, spreken, stem)</option>
-          <option value="Groepssessie of workshop">Groepssessie of workshop</option>
-          <option value="Sessie voor een team of organisatie">Sessie voor een team of organisatie</option>
-          <option value="Iets anders — ik leg het graag uit">Iets anders — ik leg het graag uit</option>
+          <option value="" disabled selected data-i18n="offerte.onderwerp_default">Waar gaat het om?</option>
+          <option value="coaching_individual" data-i18n="offerte.onderwerp_individueel">Individuele coaching (presentatie, spreken, stem)</option>
+          <option value="coaching_group" data-i18n="offerte.onderwerp_groep">Groepssessie of workshop</option>
+          <option value="coaching_team" data-i18n="offerte.onderwerp_team">Sessie voor een team of organisatie</option>
+          <option value="coaching_other" data-i18n="offerte.onderwerp_anders">Iets anders — ik leg het graag uit</option>
         </select>
       </div>
       <div class="form-row">
-        <textarea id="ofToelichting" placeholder="Vertel kort wat je zoekt of waar je tegenaan loopt. Geen roman nodig — een paar zinnen is prima." aria-label="Korte toelichting"></textarea>
+        <textarea id="ofToelichting" data-i18n-placeholder="offerte.toelichting_ph" placeholder="Vertel kort wat je zoekt of waar je tegenaan loopt. Geen roman nodig — een paar zinnen is prima." aria-label="Korte toelichting"></textarea>
       </div>
-      <button type="submit" class="contact-form-btn">Verstuur je vraag</button>
+      <button type="submit" class="contact-form-btn" data-i18n="offerte.submit">Verstuur je vraag</button>
     </form>
   </div>
 </section>
@@ -1649,22 +1688,22 @@
 <!-- CONTACT -->
 <section class="contact" id="contact">
   <div class="contact-bg">
-    <img src="beeldmateriaal/village.png" alt="Oldeberkoop" loading="lazy" />
+    <img src="beeldmateriaal/village.png" data-i18n-alt="contact.img_alt" alt="Oldeberkoop" loading="lazy" />
   </div>
   <div class="container">
-    <div class="section-label fade-in">Contact</div>
-    <div class="section-title fade-in">Interesse? Neem gerust contact op.</div>
+    <div class="section-label fade-in" data-i18n="contact.label">Contact</div>
+    <div class="section-title fade-in" data-i18n="contact.title">Interesse? Neem gerust contact op.</div>
     <div class="contact-content fade-in">
-      <p class="section-text">Wil je meer weten, heb je een vraag of wil je een sessie plannen? Neem gerust contact op. Geen verplichtingen — gewoon een eerste stap.</p>
+      <p class="section-text" data-i18n="contact.text">Wil je meer weten, heb je een vraag of wil je een sessie plannen? Neem gerust contact op. Geen verplichtingen — gewoon een eerste stap.</p>
       <div class="contact-details">
         <div>
-          <p><strong>E-mail</strong><br><a href="mailto:pepijnja@gmail.com">pepijnja@gmail.com</a></p>
+          <p><strong data-i18n="contact.email_label">E-mail</strong><br><a href="mailto:pepijnja@gmail.com">pepijnja@gmail.com</a></p>
         </div>
         <div>
-          <p><strong>Telefoon</strong><br><a href="tel:+31624733544">06 - 24 73 35 44</a></p>
+          <p><strong data-i18n="contact.telefoon_label">Telefoon</strong><br><a href="tel:+31624733544">06 - 24 73 35 44</a></p>
         </div>
         <div>
-          <p><strong>Locatie</strong><br>Schuinpad 34, 8421 PX Oldeberkoop<br>Op locatie of online</p>
+          <p><strong data-i18n="contact.locatie_label">Locatie</strong><br><span data-i18n-html="contact.locatie_text">Schuinpad 34, 8421 PX Oldeberkoop<br>Op locatie of online</span></p>
         </div>
       </div>
       <div class="contact-socials">
@@ -1681,16 +1720,16 @@
     </div>
 
     <div class="contact-form-block fade-in">
-      <h3>Laat je gegevens achter</h3>
-      <p>Liever direct een bericht achterlaten? Vul je gegevens in en Pepijn neemt contact met je op.</p>
+      <h3 data-i18n="contact.form_title">Laat je gegevens achter</h3>
+      <p data-i18n="contact.form_text">Liever direct een bericht achterlaten? Vul je gegevens in en Pepijn neemt contact met je op.</p>
       <form id="contactForm" onsubmit="submitContactForm(event)">
         <div class="contact-form-grid">
-          <input type="text" id="cfVoornaam" placeholder="Voornaam" aria-label="Voornaam" required />
-          <input type="text" id="cfAchternaam" placeholder="Achternaam" aria-label="Achternaam" required />
-          <input type="tel" id="cfTelefoon" placeholder="Telefoonnummer" aria-label="Telefoonnummer" required />
-          <input type="email" id="cfEmail" placeholder="E-mailadres" aria-label="E-mailadres" required />
+          <input type="text" id="cfVoornaam" data-i18n-placeholder="contact.voornaam_ph" data-i18n-aria="contact.voornaam_ph" placeholder="Voornaam" aria-label="Voornaam" required />
+          <input type="text" id="cfAchternaam" data-i18n-placeholder="contact.achternaam_ph" data-i18n-aria="contact.achternaam_ph" placeholder="Achternaam" aria-label="Achternaam" required />
+          <input type="tel" id="cfTelefoon" data-i18n-placeholder="contact.telefoon_ph" data-i18n-aria="contact.telefoon_ph" placeholder="Telefoonnummer" aria-label="Telefoonnummer" required />
+          <input type="email" id="cfEmail" data-i18n-placeholder="contact.email_ph" data-i18n-aria="contact.email_ph" placeholder="E-mailadres" aria-label="E-mailadres" required />
         </div>
-        <button type="submit" class="contact-form-btn">Verstuur</button>
+        <button type="submit" class="contact-form-btn" data-i18n="contact.submit">Verstuur</button>
       </form>
     </div>
 
@@ -1701,7 +1740,7 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
-    <p>© 2026 Ruimte om te spreken — Presentatie- en sprekerscoaching door Pepijn | Created by PHNK</p>
+    <p data-i18n="footer.text">© 2026 Ruimte om te spreken — Presentatie- en sprekerscoaching door Pepijn | Created by PHNK</p>
     <div class="footer-socials">
       <a href="https://www.linkedin.com/in/pepijnjansen1/" aria-label="LinkedIn" target="_blank"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
       <a href="https://www.instagram.com/pepijntisan" aria-label="Instagram" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
@@ -1716,7 +1755,7 @@
      ════════════════════════════════════════════ -->
 <div class="quiz-overlay" id="quizOverlay">
   <div class="quiz-modal">
-    <button class="quiz-close" onclick="closeQuiz()" aria-label="Sluiten">✕</button>
+    <button class="quiz-close" onclick="closeQuiz()" data-i18n-aria="quiz.close_label" aria-label="Sluiten">✕</button>
 
     <div class="quiz-progress">
       <div class="quiz-progress-fill" id="qProgress"></div>
@@ -1724,153 +1763,185 @@
 
     <!-- VRAAG 1 -->
     <div class="q-step active" id="q1">
-      <div class="q-counter">Vraag 1 van 4</div>
-      <h2 class="q-title">In welke situatie merk je dat spreken spannend of lastig wordt?</h2>
-      <p class="q-sub">Kies het antwoord dat het meest op jou van toepassing is.</p>
+      <div class="q-counter" data-i18n="quiz.q1_counter">Vraag 1 van 4</div>
+      <h2 class="q-title" data-i18n="quiz.q1_title">In welke situatie merk je dat spreken spannend of lastig wordt?</h2>
+      <p class="q-sub" data-i18n="quiz.q1_sub">Kies het antwoord dat het meest op jou van toepassing is.</p>
       <div class="q-options" data-q="situatie">
-        <div class="q-option" data-v="Bij een presentatie voor een groep">Bij een presentatie voor een groep</div>
-        <div class="q-option" data-v="Tijdens een vergadering of overleg">Tijdens een vergadering of overleg</div>
-        <div class="q-option" data-v="Bij een pitch of belangrijk gesprek">Bij een pitch of belangrijk gesprek</div>
-        <div class="q-option" data-v="Eigenlijk in veel situaties waar mensen naar me luisteren">Eigenlijk in veel situaties waar mensen naar me luisteren</div>
+        <div class="q-option" data-v="situation_group" data-i18n="quiz.situation_group">Bij een presentatie voor een groep</div>
+        <div class="q-option" data-v="situation_meeting" data-i18n="quiz.situation_meeting">Tijdens een vergadering of overleg</div>
+        <div class="q-option" data-v="situation_pitch" data-i18n="quiz.situation_pitch">Bij een pitch of belangrijk gesprek</div>
+        <div class="q-option" data-v="situation_many" data-i18n="quiz.situation_many">Eigenlijk in veel situaties waar mensen naar me luisteren</div>
       </div>
       <div class="q-nav">
-        <button class="q-back hidden">← Terug</button>
-        <button class="q-next" disabled onclick="qNext()">Volgende →</button>
+        <button class="q-back hidden" data-i18n="quiz.back">← Terug</button>
+        <button class="q-next" disabled onclick="qNext()" data-i18n="quiz.next">Volgende →</button>
       </div>
     </div>
 
     <!-- VRAAG 2 -->
     <div class="q-step" id="q2">
-      <div class="q-counter">Vraag 2 van 4</div>
-      <h2 class="q-title">Wat herken je het meest?</h2>
-      <p class="q-sub">Er is geen goed of fout antwoord.</p>
+      <div class="q-counter" data-i18n="quiz.q2_counter">Vraag 2 van 4</div>
+      <h2 class="q-title" data-i18n="quiz.q2_title">Wat herken je het meest?</h2>
+      <p class="q-sub" data-i18n="quiz.q2_sub">Er is geen goed of fout antwoord.</p>
       <div class="q-options" data-q="gevoel">
-        <div class="q-option" data-v="Mijn stem wordt onzeker of vlak">Mijn stem wordt onzeker of vlak</div>
-        <div class="q-option" data-v="Ik raak mijn verhaal kwijt of ga hakkelen">Ik raak mijn verhaal kwijt of ga hakkelen</div>
-        <div class="q-option" data-v="Ik voel spanning in mijn lichaam — buik, keel, handen">Ik voel spanning in mijn lichaam — buik, keel, handen</div>
-        <div class="q-option" data-v="Ik heb het gevoel dat ik niet overkom zoals ik wil">Ik heb het gevoel dat ik niet overkom zoals ik wil</div>
+        <div class="q-option" data-v="feeling_voice" data-i18n="quiz.feeling_voice">Mijn stem wordt onzeker of vlak</div>
+        <div class="q-option" data-v="feeling_story" data-i18n="quiz.feeling_story">Ik raak mijn verhaal kwijt of ga hakkelen</div>
+        <div class="q-option" data-v="feeling_tension" data-i18n="quiz.feeling_tension">Ik voel spanning in mijn lichaam — buik, keel, handen</div>
+        <div class="q-option" data-v="feeling_impression" data-i18n="quiz.feeling_impression">Ik heb het gevoel dat ik niet overkom zoals ik wil</div>
       </div>
       <div class="q-nav">
-        <button class="q-back" onclick="qPrev()">← Terug</button>
-        <button class="q-next" disabled onclick="qNext()">Volgende →</button>
+        <button class="q-back" onclick="qPrev()" data-i18n="quiz.back">← Terug</button>
+        <button class="q-next" disabled onclick="qNext()" data-i18n="quiz.next">Volgende →</button>
       </div>
     </div>
 
     <!-- VRAAG 3 -->
     <div class="q-step" id="q3">
-      <div class="q-counter">Vraag 3 van 4</div>
-      <h2 class="q-title">Hoe ga je daar nu mee om?</h2>
-      <p class="q-sub">Herkenning is de eerste stap.</p>
+      <div class="q-counter" data-i18n="quiz.q3_counter">Vraag 3 van 4</div>
+      <h2 class="q-title" data-i18n="quiz.q3_title">Hoe ga je daar nu mee om?</h2>
+      <p class="q-sub" data-i18n="quiz.q3_sub">Herkenning is de eerste stap.</p>
       <div class="q-options" data-q="omgang">
-        <div class="q-option" data-v="Ik vermijd het zoveel mogelijk">Ik vermijd het zoveel mogelijk</div>
-        <div class="q-option" data-v="Ik doe het wel, maar met veel stress vooraf">Ik doe het wel, maar met veel stress vooraf</div>
-        <div class="q-option" data-v="Ik bereid me eindeloos voor, maar het helpt niet genoeg">Ik bereid me eindeloos voor, maar het helpt niet genoeg</div>
-        <div class="q-option" data-v="Ik doe alsof het oké is, maar vanbinnen voel ik me onzeker">Ik doe alsof het oké is, maar vanbinnen voel ik me onzeker</div>
+        <div class="q-option" data-v="coping_avoid" data-i18n="quiz.coping_avoid">Ik vermijd het zoveel mogelijk</div>
+        <div class="q-option" data-v="coping_stress" data-i18n="quiz.coping_stress">Ik doe het wel, maar met veel stress vooraf</div>
+        <div class="q-option" data-v="coping_prepare" data-i18n="quiz.coping_prepare">Ik bereid me eindeloos voor, maar het helpt niet genoeg</div>
+        <div class="q-option" data-v="coping_pretend" data-i18n="quiz.coping_pretend">Ik doe alsof het oké is, maar vanbinnen voel ik me onzeker</div>
       </div>
       <div class="q-nav">
-        <button class="q-back" onclick="qPrev()">← Terug</button>
-        <button class="q-next" disabled onclick="qNext()">Volgende →</button>
+        <button class="q-back" onclick="qPrev()" data-i18n="quiz.back">← Terug</button>
+        <button class="q-next" disabled onclick="qNext()" data-i18n="quiz.next">Volgende →</button>
       </div>
     </div>
 
     <!-- VRAAG 4 -->
     <div class="q-step" id="q4">
-      <div class="q-counter">Vraag 4 van 4</div>
-      <h2 class="q-title">Wat zou je het liefst willen veranderen?</h2>
-      <p class="q-sub">Stel je voor dat het kon.</p>
+      <div class="q-counter" data-i18n="quiz.q4_counter">Vraag 4 van 4</div>
+      <h2 class="q-title" data-i18n="quiz.q4_title">Wat zou je het liefst willen veranderen?</h2>
+      <p class="q-sub" data-i18n="quiz.q4_sub">Stel je voor dat het kon.</p>
       <div class="q-options" data-q="wens">
-        <div class="q-option" data-v="Met meer rust voor een groep staan">Met meer rust voor een groep staan</div>
-        <div class="q-option" data-v="Duidelijker en zelfverzekerder overkomen">Duidelijker en zelfverzekerder overkomen</div>
-        <div class="q-option" data-v="Minder energie kwijt zijn aan spanning en voorbereiding">Minder energie kwijt zijn aan spanning en voorbereiding</div>
-        <div class="q-option" data-v="Meer plezier hebben in presenteren en spreken">Meer plezier hebben in presenteren en spreken</div>
+        <div class="q-option" data-v="wish_calm" data-i18n="quiz.wish_calm">Met meer rust voor een groep staan</div>
+        <div class="q-option" data-v="wish_confident" data-i18n="quiz.wish_confident">Duidelijker en zelfverzekerder overkomen</div>
+        <div class="q-option" data-v="wish_energy" data-i18n="quiz.wish_energy">Minder energie kwijt zijn aan spanning en voorbereiding</div>
+        <div class="q-option" data-v="wish_enjoy" data-i18n="quiz.wish_enjoy">Meer plezier hebben in presenteren en spreken</div>
       </div>
       <div class="q-nav">
-        <button class="q-back" onclick="qPrev()">← Terug</button>
-        <button class="q-next" disabled onclick="qShowResult()">Bekijk mijn resultaat →</button>
+        <button class="q-back" onclick="qPrev()" data-i18n="quiz.back">← Terug</button>
+        <button class="q-next" disabled onclick="qShowResult()" data-i18n="quiz.show_result">Bekijk mijn resultaat →</button>
       </div>
     </div>
 
     <!-- RESULTAAT -->
     <div class="q-step" id="q-result">
-      <div class="q-counter">Jouw resultaat</div>
+      <div class="q-counter" data-i18n="quiz.result_counter">Jouw resultaat</div>
       <h2 class="q-result-title" id="qResultTitle"></h2>
 
       <div class="q-answers-box">
-        <h3>Dit heb je aangegeven</h3>
+        <h3 data-i18n="quiz.result_answers_title">Dit heb je aangegeven</h3>
         <div id="qAnswersSummary"></div>
       </div>
 
       <div class="q-message" id="qResultMessage"></div>
 
       <div class="q-cta-block">
-        <p>Het doel is dat je je verhaal op jouw eigen manier durft te dragen.</p>
-        <p class="small">— Pepijn</p>
+        <p data-i18n="quiz.result_cta">Het doel is dat je je verhaal op jouw eigen manier durft te dragen.</p>
+        <p class="small" data-i18n="quiz.result_cta_author">— Pepijn</p>
       </div>
 
-      <div class="q-form-title">Vrijblijvend contact</div>
-      <p class="q-form-sub">Wil je eens vrijblijvend sparren? Laat je gegevens achter, dan neemt Pepijn persoonlijk contact met je op.</p>
+      <div class="q-form-title" data-i18n="quiz.form_title">Vrijblijvend contact</div>
+      <p class="q-form-sub" data-i18n="quiz.form_sub">Wil je eens vrijblijvend sparren? Laat je gegevens achter, dan neemt Pepijn persoonlijk contact met je op.</p>
 
       <div class="q-form-grid" id="qForm">
         <div class="q-field">
-          <label>Voornaam <span class="req">*</span></label>
-          <input type="text" id="qVoornaam" placeholder="Je voornaam" />
+          <label><span data-i18n="quiz.form_voornaam">Voornaam</span> <span class="req">*</span></label>
+          <input type="text" id="qVoornaam" data-i18n-placeholder="quiz.form_voornaam_ph" placeholder="Je voornaam" />
           <span class="q-field-error" id="qErr-voornaam"></span>
         </div>
         <div class="q-field">
-          <label>Achternaam <span class="req">*</span></label>
-          <input type="text" id="qAchternaam" placeholder="Je achternaam" />
+          <label><span data-i18n="quiz.form_achternaam">Achternaam</span> <span class="req">*</span></label>
+          <input type="text" id="qAchternaam" data-i18n-placeholder="quiz.form_achternaam_ph" placeholder="Je achternaam" />
           <span class="q-field-error" id="qErr-achternaam"></span>
         </div>
         <div class="q-field">
-          <label>Telefoonnummer <span class="req">*</span></label>
-          <input type="tel" id="qTelefoon" placeholder="06 - 12 34 56 78" />
+          <label><span data-i18n="quiz.form_telefoon">Telefoonnummer</span> <span class="req">*</span></label>
+          <input type="tel" id="qTelefoon" data-i18n-placeholder="quiz.form_telefoon_ph" placeholder="06 - 12 34 56 78" />
           <span class="q-field-error" id="qErr-telefoon"></span>
         </div>
         <div class="q-field">
-          <label>E-mailadres <span class="req">*</span></label>
-          <input type="email" id="qEmail" placeholder="naam@voorbeeld.nl" />
+          <label><span data-i18n="quiz.form_email">E-mailadres</span> <span class="req">*</span></label>
+          <input type="email" id="qEmail" data-i18n-placeholder="quiz.form_email_ph" placeholder="naam@voorbeeld.nl" />
           <span class="q-field-error" id="qErr-email"></span>
         </div>
-        <p class="q-privacy">Je gegevens worden alleen gebruikt om contact met je op te nemen. Niets meer.</p>
+        <p class="q-privacy" data-i18n="quiz.form_privacy">Je gegevens worden alleen gebruikt om contact met je op te nemen. Niets meer.</p>
       </div>
 
       <div class="q-nav" style="padding-top: 0.5rem;">
         <span></span>
-        <button class="q-next" onclick="qSubmit()">Verstuur →</button>
+        <button class="q-next" onclick="qSubmit()" data-i18n="quiz.form_submit">Verstuur →</button>
       </div>
     </div>
 
     <!-- BEDANKT -->
     <div class="q-step" id="q-thanks">
       <div class="q-thanks-icon">✉</div>
-      <h2 class="q-thanks-title">Dankjewel, <span id="qThanksName"></span>.</h2>
-      <p class="q-thanks-text">Je antwoorden en gegevens zijn verstuurd. Pepijn neemt zo snel mogelijk persoonlijk contact met je op om te kijken wat de beste volgende stap is.</p>
-      <p class="q-thanks-text">Geen verplichtingen — gewoon een gesprek.</p>
+      <h2 class="q-thanks-title" id="qThanksTitle"></h2>
+      <p class="q-thanks-text" data-i18n="quiz.thanks_text1">Je antwoorden en gegevens zijn verstuurd. Pepijn neemt zo snel mogelijk persoonlijk contact met je op om te kijken wat de beste volgende stap is.</p>
+      <p class="q-thanks-text" data-i18n="quiz.thanks_text2">Geen verplichtingen — gewoon een gesprek.</p>
 
       <div class="q-thanks-summary" id="qThanksSummary"></div>
 
-      <button class="q-close-btn" onclick="closeQuiz()">Terug naar de website</button>
+      <button class="q-close-btn" onclick="closeQuiz()" data-i18n="quiz.thanks_close">Terug naar de website</button>
     </div>
 
   </div>
 </div>
 
 
+<script src="translations.js"></script>
+<script src="i18n.js"></script>
 <script>
+  // ─── MAPPING: neutral keys → Dutch values for Google Sheets ───
+  const nlKeyMap = {
+    // Situatie
+    'situation_group': 'Bij een presentatie voor een groep',
+    'situation_meeting': 'Tijdens een vergadering of overleg',
+    'situation_pitch': 'Bij een pitch of belangrijk gesprek',
+    'situation_many': 'Eigenlijk in veel situaties waar mensen naar me luisteren',
+    // Gevoel
+    'feeling_voice': 'Mijn stem wordt onzeker of vlak',
+    'feeling_story': 'Ik raak mijn verhaal kwijt of ga hakkelen',
+    'feeling_tension': 'Ik voel spanning in mijn lichaam — buik, keel, handen',
+    'feeling_impression': 'Ik heb het gevoel dat ik niet overkom zoals ik wil',
+    // Omgang
+    'coping_avoid': 'Ik vermijd het zoveel mogelijk',
+    'coping_stress': 'Ik doe het wel, maar met veel stress vooraf',
+    'coping_prepare': 'Ik bereid me eindeloos voor, maar het helpt niet genoeg',
+    'coping_pretend': 'Ik doe alsof het oké is, maar vanbinnen voel ik me onzeker',
+    // Wens
+    'wish_calm': 'Met meer rust voor een groep staan',
+    'wish_confident': 'Duidelijker en zelfverzekerder overkomen',
+    'wish_energy': 'Minder energie kwijt zijn aan spanning en voorbereiding',
+    'wish_enjoy': 'Meer plezier hebben in presenteren en spreken',
+    // Offerte onderwerp
+    'coaching_individual': 'Individuele coaching (presentatie, spreken, stem)',
+    'coaching_group': 'Groepssessie of workshop',
+    'coaching_team': 'Sessie voor een team of organisatie',
+    'coaching_other': 'Iets anders — ik leg het graag uit'
+  };
+
   // ─── OFFERTE FORMULIER ───
   async function submitOfferteForm(e) {
     e.preventDefault();
     var form = document.getElementById('offerteForm');
     var btn = form.querySelector('button[type="submit"]');
     btn.disabled = true;
-    btn.textContent = 'Verzenden...';
+    btn.textContent = i18n.t('offerte.sending');
 
+    var onderwerpKey = document.getElementById('ofOnderwerp').value;
     var data = {
       type: 'offerte',
       naam: document.getElementById('ofNaam').value.trim(),
       email: document.getElementById('ofEmail').value.trim(),
       telefoon: document.getElementById('ofTelefoon').value.trim(),
-      onderwerp: document.getElementById('ofOnderwerp').value,
+      onderwerp: nlKeyMap[onderwerpKey] || onderwerpKey,
       toelichting: document.getElementById('ofToelichting').value.trim(),
       timestamp: new Date().toLocaleString('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', '')
     };
@@ -1883,12 +1954,12 @@
       form.reset();
       document.getElementById('ofOnderwerp').selectedIndex = 0;
       btn.disabled = false;
-      btn.textContent = 'Verstuur je vraag';
-      showOfferteToast('Dankjewel voor je bericht. Pepijn neemt zo snel mogelijk persoonlijk contact met je op.');
+      btn.textContent = i18n.t('offerte.submit');
+      showOfferteToast(i18n.t('offerte.toast'));
     } catch (error) {
       btn.disabled = false;
-      btn.textContent = 'Verstuur je vraag';
-      alert('Er ging iets mis. Probeer het opnieuw of mail naar pepijnja@gmail.com');
+      btn.textContent = i18n.t('offerte.submit');
+      alert(i18n.t('offerte.error'));
     }
   }
 
@@ -1912,7 +1983,7 @@
     var form = document.getElementById('contactForm');
     var btn = form.querySelector('button[type="submit"]');
     btn.disabled = true;
-    btn.textContent = 'Verzenden...';
+    btn.textContent = i18n.t('contact.sending');
 
     var data = {
       voornaam: document.getElementById('cfVoornaam').value.trim(),
@@ -1928,11 +1999,12 @@
         method: 'POST',
         body: JSON.stringify(data)
       });
-      form.innerHTML = '<div class="contact-form-success">Bedankt ' + data.voornaam + '! Pepijn neemt snel contact met je op.</div>';
+      var successMsg = i18n.t('contact.success').replace('{name}', data.voornaam);
+      form.innerHTML = '<div class="contact-form-success">' + successMsg + '</div>';
     } catch (error) {
       btn.disabled = false;
-      btn.textContent = 'Verstuur';
-      alert('Er ging iets mis. Probeer het opnieuw of mail naar pepijnja@gmail.com');
+      btn.textContent = i18n.t('contact.submit');
+      alert(i18n.t('contact.error'));
     }
   }
 
@@ -2039,18 +2111,28 @@
     qStep = 5;
     document.getElementById('qProgress').style.width = '85%';
 
-    const labels = {
-      situatie: 'Wanneer speelt het',
-      gevoel: 'Wat je herkent',
-      omgang: 'Hoe je ermee omgaat',
-      wens: 'Wat je zou willen'
+    const labelKeys = {
+      situatie: 'quiz.result_label_situatie',
+      gevoel: 'quiz.result_label_gevoel',
+      omgang: 'quiz.result_label_omgang',
+      wens: 'quiz.result_label_wens'
+    };
+
+    // Map answer keys to their translation keys for display
+    const answerI18nPrefix = {
+      situatie: 'quiz.',
+      gevoel: 'quiz.',
+      omgang: 'quiz.',
+      wens: 'quiz.'
     };
 
     let html = '';
-    for (const [key, label] of Object.entries(labels)) {
+    for (const [key, labelKey] of Object.entries(labelKeys)) {
+      const answerKey = qAnswers[key];
+      const displayValue = answerKey ? i18n.t('quiz.' + answerKey) : '—';
       html += `<div class="q-answer-item">
-        <div class="q-answer-label">${label}</div>
-        <div class="q-answer-value">${qAnswers[key] || '—'}</div>
+        <div class="q-answer-label">${i18n.t(labelKey)}</div>
+        <div class="q-answer-value">${displayValue}</div>
       </div>`;
     }
     document.getElementById('qAnswersSummary').innerHTML = html;
@@ -2060,64 +2142,97 @@
   }
 
   function qGenTitle() {
-    if (qAnswers.omgang === 'Ik vermijd het zoveel mogelijk')
-      return 'Het feit dat je hier bent, is al een stap. Een belangrijke.';
-    if (qAnswers.gevoel === 'Ik voel spanning in mijn lichaam — buik, keel, handen')
-      return 'Je lichaam reageert — en dat is heel normaal.';
-    if (qAnswers.gevoel === 'Mijn stem wordt onzeker of vlak')
-      return 'Je stem vertelt meer dan je denkt.';
-    if (qAnswers.wens === 'Meer plezier hebben in presenteren en spreken')
-      return 'Spreken mag ook leuk zijn.';
-    return 'Wat je voelt herkennen heel veel mensen.';
+    if (qAnswers.omgang === 'coping_avoid')
+      return i18n.t('quiz.title_avoid');
+    if (qAnswers.gevoel === 'feeling_tension')
+      return i18n.t('quiz.title_tension');
+    if (qAnswers.gevoel === 'feeling_voice')
+      return i18n.t('quiz.title_voice');
+    if (qAnswers.wens === 'wish_enjoy')
+      return i18n.t('quiz.title_enjoy');
+    return i18n.t('quiz.title_default');
   }
 
   function qGenMessage() {
     const sitMap = {
-      'Bij een presentatie voor een groep':
-        'Presenteren voor een groep is voor veel mensen spannend — ook voor mensen die het regelmatig doen. Je bent hierin absoluut niet alleen.',
-      'Tijdens een vergadering of overleg':
-        'Spanning in vergaderingen komt vaker voor dan je denkt. Juist omdat het informeler lijkt, kan het moeilijker voelen om je stem te laten horen.',
-      'Bij een pitch of belangrijk gesprek':
-        'Bij een pitch of belangrijk gesprek staat er iets op het spel. Logisch dat dat spanning geeft. Het laat zien dat het je iets uitmaakt.',
-      'Eigenlijk in veel situaties waar mensen naar me luisteren':
-        'Als spreken in veel situaties spannend voelt, kan dat zwaar zijn. Het goede nieuws: het betekent niet dat je er niet goed in bent. Het betekent dat je er nog niet het juiste houvast bij hebt gevonden.'
+      'situation_group': 'quiz.msg_sit_group',
+      'situation_meeting': 'quiz.msg_sit_meeting',
+      'situation_pitch': 'quiz.msg_sit_pitch',
+      'situation_many': 'quiz.msg_sit_many'
     };
 
     const gevoelMap = {
-      'Mijn stem wordt onzeker of vlak':
-        'Dat je stem onzeker of vlak klinkt als je gespannen bent, is een <strong>natuurlijke reactie</strong>. Spanning beïnvloedt direct je ademhaling en daarmee je stemgeluid. Met gerichte aandacht voor ademhaling en stemgebruik kun je hier veel in veranderen.',
-      'Ik raak mijn verhaal kwijt of ga hakkelen':
-        'Je verhaal kwijtraken onder druk heeft zelden te maken met slechte voorbereiding. Het komt doordat <strong>spanning je denken verstoort</strong>. Door te werken aan structuur én aan rust, leer je je rode draad vasthouden — ook als het spannend wordt.',
-      'Ik voel spanning in mijn lichaam — buik, keel, handen':
-        'Lichamelijke spanning bij spreken is heel normaal — je lichaam bereidt zich voor op iets belangrijks. <strong>Zenuwen horen erbij.</strong> De kunst is niet om ze weg te krijgen, maar om ze te leren gebruiken in plaats van bestrijden.',
-      'Ik heb het gevoel dat ik niet overkom zoals ik wil':
-        'Het gevoel dat je niet overkomt zoals je wilt, ervaren verrassend veel mensen. Vaak zit het verschil niet in wát je zegt, maar in <strong>hoe je erbij staat, ademt en kijkt</strong>. Kleine aanpassingen kunnen daarin een groot verschil maken.'
+      'feeling_voice': 'quiz.msg_feel_voice',
+      'feeling_story': 'quiz.msg_feel_story',
+      'feeling_tension': 'quiz.msg_feel_tension',
+      'feeling_impression': 'quiz.msg_feel_impression'
     };
 
     const omgangMap = {
-      'Ik vermijd het zoveel mogelijk':
-        'Dat je het vermijdt is begrijpelijk — maar het houdt het patroon ook in stand. Met kleine, veilige stappen kun je ontdekken dat het anders kan.',
-      'Ik doe het wel, maar met veel stress vooraf':
-        'Dat je het tóch doet ondanks de stress, getuigt van doorzettingsvermogen. Stel je voor dat je diezelfde situaties met méér rust en minder energie zou kunnen doen.',
-      'Ik bereid me eindeloos voor, maar het helpt niet genoeg':
-        'Herkenbaar. Veel voorbereiding geeft controle, maar pakt de kern niet aan. Wat vaak meer helpt is werken aan hoe je spreekt — niet alleen aan wát je zegt.',
-      'Ik doe alsof het oké is, maar vanbinnen voel ik me onzeker':
-        'Dat kost energie — een rol spelen terwijl je je vanbinnen anders voelt. Authentiek communiceren begint bij durven laten zien wie je werkelijk bent.'
+      'coping_avoid': 'quiz.msg_cope_avoid',
+      'coping_stress': 'quiz.msg_cope_stress',
+      'coping_prepare': 'quiz.msg_cope_prepare',
+      'coping_pretend': 'quiz.msg_cope_pretend'
     };
 
-    return `<p>${sitMap[qAnswers.situatie] || ''}</p>
-      <p>${gevoelMap[qAnswers.gevoel] || ''}</p>
-      <p>${omgangMap[qAnswers.omgang] || ''}</p>
-      <p><strong>Het is te trainen.</strong> Niet door trucjes te leren of een rol te spelen, maar door te ontdekken wat voor jou werkt — met aandacht voor je stem, je verhaal, je lichaam en je eigen manier van spreken.</p>`;
+    const sitKey = sitMap[qAnswers.situatie];
+    const gevoelKey = gevoelMap[qAnswers.gevoel];
+    const omgangKey = omgangMap[qAnswers.omgang];
+
+    return `<p>${sitKey ? i18n.t(sitKey) : ''}</p>
+      <p>${gevoelKey ? i18n.t(gevoelKey) : ''}</p>
+      <p>${omgangKey ? i18n.t(omgangKey) : ''}</p>
+      <p>${i18n.t('quiz.msg_conclusion')}</p>`;
+  }
+
+  // Generate Dutch title/text for Google Sheets (always NL)
+  function qGenTitleNL() {
+    if (qAnswers.omgang === 'coping_avoid')
+      return translations.nl['quiz.title_avoid'];
+    if (qAnswers.gevoel === 'feeling_tension')
+      return translations.nl['quiz.title_tension'];
+    if (qAnswers.gevoel === 'feeling_voice')
+      return translations.nl['quiz.title_voice'];
+    if (qAnswers.wens === 'wish_enjoy')
+      return translations.nl['quiz.title_enjoy'];
+    return translations.nl['quiz.title_default'];
+  }
+
+  function qGenMessageNL() {
+    const sitMap = {
+      'situation_group': 'quiz.msg_sit_group',
+      'situation_meeting': 'quiz.msg_sit_meeting',
+      'situation_pitch': 'quiz.msg_sit_pitch',
+      'situation_many': 'quiz.msg_sit_many'
+    };
+    const gevoelMap = {
+      'feeling_voice': 'quiz.msg_feel_voice',
+      'feeling_story': 'quiz.msg_feel_story',
+      'feeling_tension': 'quiz.msg_feel_tension',
+      'feeling_impression': 'quiz.msg_feel_impression'
+    };
+    const omgangMap = {
+      'coping_avoid': 'quiz.msg_cope_avoid',
+      'coping_stress': 'quiz.msg_cope_stress',
+      'coping_prepare': 'quiz.msg_cope_prepare',
+      'coping_pretend': 'quiz.msg_cope_pretend'
+    };
+
+    const sit = sitMap[qAnswers.situatie] ? translations.nl[sitMap[qAnswers.situatie]] : '';
+    const gevoel = gevoelMap[qAnswers.gevoel] ? translations.nl[gevoelMap[qAnswers.gevoel]] : '';
+    const omgang = omgangMap[qAnswers.omgang] ? translations.nl[omgangMap[qAnswers.omgang]] : '';
+    const conclusie = translations.nl['quiz.msg_conclusion'];
+
+    return `<p>${sit}</p><p>${gevoel}</p><p>${omgang}</p><p>${conclusie}</p>`;
   }
 
   // Validation
-  function qValidate(id, regex, msg) {
+  function qValidate(id, regex, msgKey) {
     const input = document.getElementById(id);
     const error = document.getElementById('qErr-' + id.replace('q', '').toLowerCase());
     const val = input.value.trim();
-    if (!val) { input.classList.add('error'); error.textContent = 'Dit veld is verplicht'; return false; }
-    if (!regex.test(val)) { input.classList.add('error'); error.textContent = msg; return false; }
+    if (!val) { input.classList.add('error'); error.textContent = i18n.t('quiz.form_required'); return false; }
+    if (!regex.test(val)) { input.classList.add('error'); error.textContent = i18n.t(msgKey); return false; }
     input.classList.remove('error'); error.textContent = ''; return true;
   }
 
@@ -2132,10 +2247,10 @@
 
   async function qSubmit() {
     const ok = [
-      qValidate('qVoornaam', /^[a-zA-ZÀ-ÿ\s'\-]{2,}$/, 'Vul een geldige voornaam in'),
-      qValidate('qAchternaam', /^[a-zA-ZÀ-ÿ\s'\-]{2,}$/, 'Vul een geldige achternaam in'),
-      qValidate('qTelefoon', /^(\+31|0031|0)\s?[1-9][\s.\-]?(\d[\s.\-]?){7,8}$/, 'Vul een geldig telefoonnummer in'),
-      qValidate('qEmail', /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/, 'Vul een geldig e-mailadres in')
+      qValidate('qVoornaam', /^[a-zA-ZÀ-ÿ\s'\-]{2,}$/, 'quiz.form_invalid_name'),
+      qValidate('qAchternaam', /^[a-zA-ZÀ-ÿ\s'\-]{2,}$/, 'quiz.form_invalid_surname'),
+      qValidate('qTelefoon', /^(\+31|0031|0)\s?[1-9][\s.\-]?(\d[\s.\-]?){7,8}$/, 'quiz.form_invalid_phone'),
+      qValidate('qEmail', /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/, 'quiz.form_invalid_email')
     ];
 
     if (ok.every(v => v)) {
@@ -2144,22 +2259,21 @@
       const tel = document.getElementById('qTelefoon').value.trim();
       const em = document.getElementById('qEmail').value.trim();
 
-      // Verzamel alle data
+      // Always send Dutch values to Google Sheets
       const quizData = {
         voornaam: vn,
         achternaam: an,
         email: em,
         telefoon: tel,
-        situatie: qAnswers.situatie,
-        gevoel: qAnswers.gevoel,
-        omgang: qAnswers.omgang,
-        wens: qAnswers.wens,
-        resultaatTitel: qGenTitle(),
-        resultaatTekst: qGenMessage().replace(/<[^>]*>/g, ''),
+        situatie: nlKeyMap[qAnswers.situatie] || qAnswers.situatie,
+        gevoel: nlKeyMap[qAnswers.gevoel] || qAnswers.gevoel,
+        omgang: nlKeyMap[qAnswers.omgang] || qAnswers.omgang,
+        wens: nlKeyMap[qAnswers.wens] || qAnswers.wens,
+        resultaatTitel: qGenTitleNL(),
+        resultaatTekst: qGenMessageNL().replace(/<[^>]*>/g, ''),
         timestamp: new Date().toLocaleString('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', '')
       };
 
-      // Verstuur naar Google Sheets
       const SHEETS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz6nf9FvE5WOcIu_XzhMG7S_-yDUsMosK0wswLSKcCIYgA65ITSLW0x7_41Y95X6xz0xw/exec';
 
       try {
@@ -2171,16 +2285,19 @@
         const result = await response.json();
         console.log('Data verzonden:', result);
 
-        // Toon bedankpagina
-        document.getElementById('qThanksName').textContent = vn;
+        // Show thank you page
+        var thanksTitle = i18n.t('quiz.thanks_title').replace('{name}', vn);
+        document.getElementById('qThanksTitle').textContent = thanksTitle;
+
+        // Display answer values in the user's current language
         document.getElementById('qThanksSummary').innerHTML = `
-          <p><strong>Verstuurd door:</strong> ${vn} ${an}</p>
-          <p><strong>E-mail:</strong> ${em}</p>
-          <p><strong>Telefoon:</strong> ${tel}</p>
-          <p style="margin-top:0.6rem"><strong>Situatie:</strong> ${qAnswers.situatie}</p>
-          <p><strong>Herkenning:</strong> ${qAnswers.gevoel}</p>
-          <p><strong>Omgang:</strong> ${qAnswers.omgang}</p>
-          <p><strong>Wens:</strong> ${qAnswers.wens}</p>`;
+          <p><strong>${i18n.t('quiz.thanks_sent_by')}</strong> ${vn} ${an}</p>
+          <p><strong>${i18n.t('quiz.thanks_email')}</strong> ${em}</p>
+          <p><strong>${i18n.t('quiz.thanks_phone')}</strong> ${tel}</p>
+          <p style="margin-top:0.6rem"><strong>${i18n.t('quiz.thanks_situation')}</strong> ${i18n.t('quiz.' + qAnswers.situatie)}</p>
+          <p><strong>${i18n.t('quiz.thanks_recognition')}</strong> ${i18n.t('quiz.' + qAnswers.gevoel)}</p>
+          <p><strong>${i18n.t('quiz.thanks_coping')}</strong> ${i18n.t('quiz.' + qAnswers.omgang)}</p>
+          <p><strong>${i18n.t('quiz.thanks_wish')}</strong> ${i18n.t('quiz.' + qAnswers.wens)}</p>`;
 
         qStep = 6;
         document.getElementById('qProgress').style.width = '100%';
@@ -2188,7 +2305,7 @@
 
       } catch (error) {
         console.error('Fout bij verzenden:', error);
-        alert('Er ging iets mis bij het verzenden. Probeer het later opnieuw of neem direct contact op via pepijnja@gmail.com');
+        alert(i18n.t('quiz.form_error'));
       }
     }
   }
