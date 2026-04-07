@@ -80,9 +80,9 @@ const i18n = (function() {
   function updateSwitcherButtons() {
     document.querySelectorAll('.lang-switch').forEach(function(btn) {
       if (currentLang === 'nl') {
-        btn.innerHTML = '<span class="lang-flag">🇬🇧</span> EN';
+        btn.innerHTML = '<span class="lang-flag">🇬🇧</span>';
       } else {
-        btn.innerHTML = '<span class="lang-flag">🇳🇱</span> NL';
+        btn.innerHTML = '<span class="lang-flag">🇳🇱</span>';
       }
     });
   }
