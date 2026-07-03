@@ -7,21 +7,501 @@
 <title>Pagina niet gevonden — Ruimte om te spreken</title>
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <style>
-  body { margin:0; font-family:'Nunito Sans',system-ui,sans-serif; background:#FAF8F4; color:#2A2520;
-         min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; }
-  main { padding:2rem; max-width:32rem; }
-  h1 { font-family:Georgia,'DM Serif Display',serif; font-weight:400; font-size:2rem; margin:0 0 1rem; }
-  p { color:#5C554A; line-height:1.6; margin:0 0 2rem; }
-  a { display:inline-block; background:#C4704B; color:#FAF8F4; text-decoration:none;
-      padding:0.85rem 1.75rem; border-radius:2rem; }
-  a:focus-visible { outline:3px solid #2A2520; outline-offset:2px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #0d0805; }
+canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+.home {
+  position: fixed;
+  bottom: 3.8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(240, 210, 175, 0.82);
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.4s ease;
+  z-index: 10;
+  white-space: nowrap;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.9);
+}
+.home:hover { color: rgba(240, 210, 175, 1); }
 </style>
 </head>
 <body>
-<main>
-  <h1>Deze pagina bestaat niet (meer)</h1>
-  <p>Geen zorgen — alles over presentatie- en sprekerscoaching door Pepijn vind je op de homepagina.</p>
-  <a href="/">Naar de homepagina</a>
-</main>
+<canvas id="c"></canvas>
+<a class="home" href="/" aria-label="Terug naar de homepagina">↩ terug</a>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+let W, H, t = 0;
+let drops = [], leaves = [], sparkles = [];
+let mistOffset = 0, mistOffset2 = 0;
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ── Waterfall config ───────────────────────────────────────────
+const falls = [
+  { xr: 0.38, wr: 0.14, speed: 9,  bright: 1.0 },
+  { xr: 0.60, wr: 0.09, speed: 11, bright: 0.65 },
+  { xr: 0.20, wr: 0.07, speed: 7,  bright: 0.45 },
+  { xr: 0.73, wr: 0.05, speed: 13, bright: 0.30 },
+];
+
+// ── Water drop splash ─────────────────────────────────────────
+class Drop {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.vx = (Math.random() - 0.5) * 3.5;
+    this.vy = -(Math.random() * 3.5 + 0.5);
+    this.life = Math.random() * 55 + 25;
+    this.max  = this.life;
+    this.r    = Math.random() * 1.8 + 0.4;
+  }
+  tick() { this.x += this.vx; this.y += this.vy; this.vy += 0.07; this.life--; return this.life > 0; }
+  draw() {
+    ctx.save();
+    ctx.globalAlpha = (this.life / this.max) * 0.55;
+    ctx.fillStyle = '#e8c49a';
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+// ── Drifting leaf ─────────────────────────────────────────────
+class Leaf {
+  constructor(scattered) {
+    this.reset(scattered);
+  }
+  reset(scattered) {
+    this.x     = Math.random() * W;
+    this.y     = scattered ? Math.random() * H : -15;
+    this.vx    = (Math.random() - 0.5) * 1.2;
+    this.vy    = Math.random() * 0.6 + 0.25;
+    this.angle = Math.random() * Math.PI * 2;
+    this.spin  = (Math.random() - 0.5) * 0.04;
+    this.a     = Math.random() * 5 + 3;
+    this.b     = this.a * (0.3 + Math.random() * 0.2);
+    this.hue   = 18 + Math.random() * 40;
+    this.lum   = 16 + Math.random() * 18;
+    this.seed  = Math.random() * 100;
+  }
+  tick() {
+    this.x     += this.vx + Math.sin(t * 0.008 + this.seed) * 0.4;
+    this.y     += this.vy;
+    this.angle += this.spin;
+    if (this.y > H + 20) this.reset(false);
+  }
+  draw() {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angle);
+    ctx.globalAlpha = 0.65;
+    ctx.fillStyle = `hsl(${this.hue},55%,${this.lum}%)`;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, this.a, this.b, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+// ── Canopy sparkle ────────────────────────────────────────────
+class Sparkle {
+  constructor() { this.reset(true); }
+  reset(rand) {
+    this.x    = Math.random() * W;
+    this.y    = Math.random() * H * 0.55;
+    this.life = rand ? Math.random() : 1;
+    this.spd  = Math.random() * 0.007 + 0.003;
+    this.r    = Math.random() * 1.4 + 0.3;
+  }
+  tick() { this.life -= this.spd; if (this.life <= 0) this.reset(false); }
+  draw() {
+    ctx.save();
+    ctx.globalAlpha = this.life * 0.45;
+    ctx.fillStyle = '#f5d8a8';
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+// Init
+for (let i = 0; i < 28; i++) leaves.push(new Leaf(true));
+for (let i = 0; i < 55; i++) sparkles.push(new Sparkle());
+
+// ── Background sky + ground ───────────────────────────────────
+function drawBG() {
+  const sg = ctx.createLinearGradient(0, 0, 0, H);
+  sg.addColorStop(0.00, '#0d0805');
+  sg.addColorStop(0.25, '#1c0e07');
+  sg.addColorStop(0.55, '#2e1a0e');
+  sg.addColorStop(0.70, '#3d2414');
+  sg.addColorStop(1.00, '#1a0c06');
+  ctx.fillStyle = sg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Pool
+  const pg = ctx.createLinearGradient(0, H * 0.68, 0, H);
+  pg.addColorStop(0, '#2e1608');
+  pg.addColorStop(0.5, '#1a0c05');
+  pg.addColorStop(1, '#0a0402');
+  ctx.fillStyle = pg;
+  ctx.fillRect(0, H * 0.68, W, H * 0.32);
+}
+
+// ── God rays ─────────────────────────────────────────────────
+function drawRays() {
+  ctx.save();
+  for (let i = 0; i < 7; i++) {
+    const cx = W * (0.1 + i * 0.14 + Math.sin(t * 0.0015 + i * 1.1) * 0.04);
+    const spread = W * 0.09;
+    const a = 0.025 + Math.sin(t * 0.002 + i * 0.8) * 0.012;
+    const rg = ctx.createLinearGradient(cx, 0, cx + spread, H * 0.75);
+    rg.addColorStop(0, `rgba(215,148,72,${a})`);
+    rg.addColorStop(1, `rgba(215,148,72,0)`);
+    ctx.fillStyle = rg;
+    ctx.beginPath();
+    ctx.moveTo(cx - spread * 0.3, 0);
+    ctx.lineTo(cx + spread * 1.1, 0);
+    ctx.lineTo(cx + spread * 1.5, H * 0.75);
+    ctx.lineTo(cx - spread * 0.1, H * 0.75);
+    ctx.closePath();
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+// ── Waterfalls ────────────────────────────────────────────────
+function drawFalls() {
+  const top = H * 0.04;
+  const bot = H * 0.72;
+  const fh  = bot - top;
+
+  falls.forEach((f, fi) => {
+    const fx = W * f.xr;
+    const fw = W * f.wr;
+    const strips = 10;
+
+    for (let s = 0; s < strips; s++) {
+      const sx = fx + (fw / strips) * s;
+      const sw = fw / strips + 1;
+      const phase = (t * f.speed * 0.6 + s * 38 + fi * 130) % fh;
+      const edge  = s === 0 || s === strips - 1;
+      const ba    = f.bright * (edge ? 0.25 : 0.4 + (s % 3) * 0.12);
+
+      const wg = ctx.createLinearGradient(sx, top, sx, bot);
+      wg.addColorStop(0.0, `rgba(220,180,130,0)`);
+      wg.addColorStop(0.15, `rgba(235,200,155,${ba * 0.55})`);
+      wg.addColorStop(0.5,  `rgba(248,220,175,${ba})`);
+      wg.addColorStop(0.85, `rgba(235,200,155,${ba * 0.7})`);
+      wg.addColorStop(1.0, `rgba(220,180,130,0)`);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(sx, top, sw, fh);
+      ctx.clip();
+      for (let tile = -1; tile <= 1; tile++) {
+        ctx.fillStyle = wg;
+        ctx.fillRect(sx, top + tile * fh + (phase % fh), sw, fh);
+      }
+      ctx.restore();
+    }
+
+    // Glow edge
+    const eg = ctx.createLinearGradient(fx - 2, 0, fx + fw + 2, 0);
+    eg.addColorStop(0, 'rgba(220,175,110,0)');
+    eg.addColorStop(0.15, `rgba(220,175,110,${f.bright * 0.18})`);
+    eg.addColorStop(0.85, `rgba(220,175,110,${f.bright * 0.18})`);
+    eg.addColorStop(1, 'rgba(220,175,110,0)');
+    ctx.fillStyle = eg;
+    ctx.fillRect(fx - 2, top, fw + 4, fh);
+
+    // Splash pool
+    const splY = bot;
+    const splR = ctx.createRadialGradient(fx + fw / 2, splY, 0, fx + fw / 2, splY, fw * 1.8);
+    splR.addColorStop(0,   `rgba(240,210,160,${0.28 * f.bright})`);
+    splR.addColorStop(0.4, `rgba(200,160,100,${0.14 * f.bright})`);
+    splR.addColorStop(1,   'rgba(200,160,100,0)');
+    ctx.fillStyle = splR;
+    ctx.fillRect(fx - fw * 0.9, splY - 18, fw * 3.6, 55);
+
+    // Spawn drops
+    if (Math.random() < 0.45 * f.bright) {
+      for (let p = 0; p < 4; p++)
+        drops.push(new Drop(fx + Math.random() * fw, splY));
+    }
+  });
+}
+
+// ── Water surface ────────────────────────────────────────────
+function drawPool() {
+  const wt = H * 0.695;
+  for (let r = 0; r < 10; r++) {
+    const ry = wt + r * 9 + Math.sin(t * 0.04 + r * 0.6) * 2.5;
+    ctx.strokeStyle = `rgba(190,140,85,${0.10 - r * 0.008})`;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let x = 0; x <= W; x += 18) {
+      const y = ry + Math.sin(x * 0.018 + t * 0.025 + r * 0.9) * 3;
+      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+  // Reflection shimmer
+  falls.forEach(f => {
+    const fx = W * f.xr, fw = W * f.wr;
+    const rg = ctx.createLinearGradient(fx + fw / 2, wt, fx + fw / 2, H);
+    rg.addColorStop(0,   `rgba(196,112,75,${0.20 * f.bright})`);
+    rg.addColorStop(0.6, `rgba(150,80,45,${0.08 * f.bright})`);
+    rg.addColorStop(1,   'rgba(100,55,25,0)');
+    ctx.fillStyle = rg;
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(fx - fw * 0.4, wt, fw * 1.8, H - wt);
+    ctx.clip();
+    ctx.fillRect(fx - fw * 0.4, wt, fw * 1.8, H - wt);
+    ctx.restore();
+  });
+}
+
+// ── Foliage silhouettes ──────────────────────────────────────
+function drawFoliage() {
+  ctx.save();
+  // Deep shadow layer
+  ctx.fillStyle = '#120803';
+  // Left canopy
+  ctx.beginPath();
+  ctx.moveTo(-10, -10);
+  ctx.lineTo(-10, H * 0.42);
+  [ [0,H*.38],[W*.04,H*.22],[W*.07,H*.30],[W*.11,H*.12],
+    [W*.14,H*.24],[W*.18,H*.06],[W*.21,H*.19],[W*.25,H*.02],
+    [W*.28,H*.16],[W*.31,H*.0],[W*.33,H*.18],[W*.36,H*.06],
+    [-10,-10]
+  ].forEach(([x,y]) => ctx.lineTo(x,y));
+  ctx.closePath();
+  ctx.fill();
+
+  // Right canopy
+  ctx.beginPath();
+  ctx.moveTo(W+10, -10);
+  ctx.lineTo(W+10, H * 0.42);
+  [ [W,H*.35],[W*.95,H*.16],[W*.91,H*.27],[W*.87,H*.08],
+    [W*.83,H*.22],[W*.79,H*.0],[W*.76,H*.16],[W*.72,H*.04],
+    [W*.69,H*.20],[W*.66,H*.0],[W*.63,H*.14],
+    [W+10,-10]
+  ].forEach(([x,y]) => ctx.lineTo(x,y));
+  ctx.closePath();
+  ctx.fill();
+
+  // Mid-tone layer
+  ctx.fillStyle = '#1c0e08';
+  ctx.beginPath();
+  ctx.moveTo(-10,-10);
+  ctx.lineTo(-10,H*.28);
+  [[0,H*.25],[W*.03,H*.14],[W*.06,H*.20],[W*.10,H*.07],[W*.13,H*.17],[W*.16,H*.0],[-10,-10]]
+    .forEach(([x,y]) => ctx.lineTo(x,y));
+  ctx.closePath(); ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(W+10,-10);
+  ctx.lineTo(W+10,H*.28);
+  [[W,H*.22],[W*.96,H*.10],[W*.92,H*.18],[W*.88,H*.05],[W*.84,H*.15],[W*.80,H*.0],[W+10,-10]]
+    .forEach(([x,y]) => ctx.lineTo(x,y));
+  ctx.closePath(); ctx.fill();
+
+  // Bottom foreground rocks + ferns
+  ctx.fillStyle = '#0d0502';
+  ctx.beginPath();
+  ctx.moveTo(-10, H+10);
+  ctx.lineTo(-10, H*.87);
+  ctx.bezierCurveTo(W*.06,H*.80, W*.12,H*.90, W*.19,H*.85);
+  ctx.bezierCurveTo(W*.24,H*.78, W*.30,H*.88, W*.38,H*.84);
+  ctx.bezierCurveTo(W*.46,H*.79, W*.53,H*.87, W*.62,H*.83);
+  ctx.bezierCurveTo(W*.70,H*.78, W*.78,H*.88, W*.86,H*.84);
+  ctx.lineTo(W+10, H*.87);
+  ctx.lineTo(W+10, H+10);
+  ctx.closePath(); ctx.fill();
+
+  // Foreground fern layer
+  ctx.fillStyle = '#160a04';
+  ctx.beginPath();
+  ctx.moveTo(-10,H+10);
+  ctx.lineTo(-10,H*.93);
+  ctx.bezierCurveTo(W*.10,H*.83, W*.20,H*.95, W*.32,H*.90);
+  ctx.bezierCurveTo(W*.42,H*.85, W*.52,H*.92, W*.65,H*.89);
+  ctx.bezierCurveTo(W*.76,H*.84, W*.88,H*.93, W+10,H*.91);
+  ctx.lineTo(W+10,H+10);
+  ctx.closePath(); ctx.fill();
+
+  ctx.restore();
+}
+
+// ── Drifting mist ────────────────────────────────────────────
+function drawMist() {
+  mistOffset  = (mistOffset  + 0.28) % (W * 2.5);
+  mistOffset2 = (mistOffset2 + 0.15) % (W * 2.0);
+
+  // Bottom valley mist
+  const bg = ctx.createLinearGradient(0, H * 0.60, 0, H * 0.86);
+  bg.addColorStop(0, 'rgba(210,165,110,0)');
+  bg.addColorStop(0.45, `rgba(210,165,110,${0.09 + Math.sin(t * 0.009) * 0.04})`);
+  bg.addColorStop(1, 'rgba(210,165,110,0)');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, H * 0.60, W, H * 0.26);
+
+  for (let m = 0; m < 6; m++) {
+    const mx = ((m * W * 0.45 - mistOffset + W * 2.5) % (W * 2.5)) - W * 0.25;
+    const my = H * (0.62 + m * 0.05 + Math.sin(t * 0.007 + m) * 0.025);
+    const mw = W * (0.28 + m * 0.07);
+    const mh = H * 0.11;
+    const mg = ctx.createRadialGradient(mx+mw/2,my+mh/2,0, mx+mw/2,my+mh/2,mw/2);
+    mg.addColorStop(0, `rgba(225,175,118,${0.08 + m * 0.012})`);
+    mg.addColorStop(1, 'rgba(225,175,118,0)');
+    ctx.fillStyle = mg;
+    ctx.fillRect(mx, my, mw, mh);
+  }
+
+  // Upper atmospheric haze
+  for (let m = 0; m < 5; m++) {
+    const mx = ((m * W * 0.52 - mistOffset2 + W * 2) % (W * 2)) - W * 0.2;
+    const my = H * (0.28 + m * 0.06 + Math.sin(t * 0.005 + m * 1.4) * 0.035);
+    const mw = W * (0.22 + m * 0.05);
+    const mh = H * 0.09;
+    const mg = ctx.createRadialGradient(mx+mw/2,my+mh/2,0, mx+mw/2,my+mh/2,mw/2);
+    mg.addColorStop(0, `rgba(196,140,85,0.045)`);
+    mg.addColorStop(1, 'rgba(196,140,85,0)');
+    ctx.fillStyle = mg;
+    ctx.fillRect(mx, my, mw, mh);
+  }
+}
+
+// ── Floating 404 in the pool ──────────────────────────────────
+function draw404() {
+  const poolY = H * 0.72;
+  const bob   = Math.sin(t * 0.022) * 5 + Math.sin(t * 0.013 + 1.2) * 2.5;
+  const tiltA = Math.sin(t * 0.018 + 0.5) * 0.045;
+  const textY = poolY + 34 + bob;
+  const fontSize = Math.min(W * 0.18, 220);
+
+  ctx.save();
+  ctx.translate(W / 2, textY);
+  ctx.rotate(tiltA);
+
+  // Shadow
+  ctx.shadowColor = 'rgba(0,0,0,0.55)';
+  ctx.shadowBlur  = 22;
+  ctx.shadowOffsetY = 6;
+
+  ctx.font = `italic 700 ${fontSize}px Georgia, serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  // Terra cotta driftwood floating in dark amber water
+  const fg = ctx.createLinearGradient(0, -fontSize * 0.5, 0, fontSize * 0.5);
+  fg.addColorStop(0, 'rgba(210, 125, 78, 0.82)');
+  fg.addColorStop(0.4, 'rgba(175, 88, 48, 0.68)');
+  fg.addColorStop(1, 'rgba(130, 58, 28, 0.45)');
+  ctx.fillStyle = fg;
+  ctx.fillText('404', 0, 0);
+
+  // Subtle stroke
+  ctx.shadowBlur = 0;
+  ctx.shadowOffsetY = 0;
+  ctx.strokeStyle = 'rgba(240, 175, 120, 0.25)';
+  ctx.lineWidth = 1.5;
+  ctx.strokeText('404', 0, 0);
+
+  ctx.restore();
+
+  // Reflection below — flipped, rippling, fading
+  ctx.save();
+  ctx.translate(W / 2, textY + fontSize * 0.55);
+  ctx.scale(1, -0.38);
+  ctx.rotate(tiltA * -0.5);
+  ctx.globalAlpha = 0.22 + Math.sin(t * 0.025) * 0.07;
+
+  // Ripple clip mask: thin wavy bands
+  for (let r = 0; r < 5; r++) {
+    const ry = r * (fontSize * 0.22);
+    const wave = Math.sin(t * 0.03 + r * 0.9) * 3;
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(-W / 2, ry + wave, W, fontSize * 0.14);
+    ctx.clip();
+    const rf = ctx.createLinearGradient(0, 0, 0, fontSize * 0.55);
+    rf.addColorStop(0, 'rgba(196, 112, 75, 0.8)');
+    rf.addColorStop(1, 'rgba(140, 70, 35, 0)');
+    ctx.fillStyle = rf;
+    ctx.font = `italic 700 ${fontSize}px Georgia, serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText('404', 0, 0);
+    ctx.restore();
+  }
+  ctx.restore();
+}
+
+// ── Caption in dark foreground ───────────────────────────────
+function drawCaption() {
+  const line1 = 'hier is verder niets te vinden dan een echo van je stem';
+  const fs = Math.min(W * 0.016, 15);
+  ctx.save();
+  ctx.font = `400 ${fs}px 'Georgia', serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.letterSpacing = '0.12em';
+  // Min opacity 0.78 so contrast stays ≥ 4.5:1 on dark background
+  const a = 0.78 + Math.sin(t * 0.007) * 0.10;
+  ctx.fillStyle = `rgba(238, 205, 165, ${a})`;
+  ctx.shadowColor = 'rgba(0,0,0,0.85)';
+  ctx.shadowBlur = 8;
+  ctx.fillText(line1, W / 2, H * 0.945);
+  ctx.restore();
+}
+
+// ── Main loop ─────────────────────────────────────────────────
+function frame() {
+  t++;
+  ctx.clearRect(0, 0, W, H);
+
+  drawBG();
+  drawRays();
+  drawFoliage();
+  drawFalls();
+  drawPool();
+
+  // Drops
+  drops = drops.filter(d => { const ok = d.tick(); if (ok) d.draw(); return ok; });
+  if (drops.length > 600) drops.splice(0, drops.length - 600);
+
+  // Leaves
+  leaves.forEach(l => { l.tick(); l.draw(); });
+
+  // Sparkles
+  sparkles.forEach(s => { s.tick(); s.draw(); });
+
+  drawMist();
+
+  draw404();
+  drawCaption();
+
+  requestAnimationFrame(frame);
+}
+
+frame();
+</script>
 </body>
 </html>
