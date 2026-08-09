@@ -24,7 +24,7 @@ const translations = {
     // ─── OVER PEPIJN ───
     'over.label': 'Over Pepijn',
     'over.title': 'Van podium naar coaching',
-    'over.img_alt': 'Pepijn Jansen, presentatie- en sprekerscoach uit Oldeberkoop',
+    'over.img_alt': 'Pepijn Jansen, presentatie- en sprekerscoach uit Oldeberkoop, zittend aan een tafel, vriendelijk glimlachend',
     'over.text1': 'Pepijn staat al jaren op het podium als zanger en performer, onder andere met Boys Harmony and Soul en het ZO! Gospel Choir. Hij stond op grote podia, werkte met artiesten als Berget Lewis en Shirma Rouse, en was te zien bij De Wereld Draait Door en X-Factor. Die ervaring leerde hem hoe spannend en kwetsbaar het kan zijn om voor een publiek te staan — maar ook hoe krachtig het is wanneer stem, verhaal en intentie samenvallen.',
     'over.text2': 'De bewuste stap van Amsterdam naar Oldeberkoop markeerde een keuze voor meer aandacht, rust en echte ontmoeting. Vanuit die houding begeleidt Pepijn mensen bij het vinden van hun eigen stem en aanwezigheid — zonder trucjes of vaste formats, maar met persoonlijke aandacht en praktische handvatten.',
     'over.text3': 'Voor Pepijn begint goed spreken bij jezelf durven zijn: helder, ontspannen en met vertrouwen.',
@@ -269,7 +269,7 @@ const translations = {
     // ─── OVER PEPIJN ───
     'over.label': 'About Pepijn',
     'over.title': 'From stage to coaching',
-    'over.img_alt': 'Pepijn Jansen, presentation and speaker coach from Oldeberkoop',
+    'over.img_alt': 'Pepijn Jansen, presentation and speaker coach from Oldeberkoop, sitting at a table, smiling warmly',
     'over.text1': 'Pepijn has been on stage for years as a singer and performer, including with Boys Harmony and Soul and the ZO! Gospel Choir. He performed on major stages, worked with artists such as Berget Lewis and Shirma Rouse, and appeared on De Wereld Draait Door and X-Factor. That experience taught him how exciting and vulnerable it can be to stand before an audience — but also how powerful it is when voice, story and intention come together.',
     'over.text2': 'The deliberate move from Amsterdam to Oldeberkoop marked a choice for more attention, calm and genuine connection. From that mindset, Pepijn guides people in finding their own voice and presence — without tricks or fixed formats, but with personal attention and practical tools.',
     'over.text3': 'For Pepijn, good speaking starts with daring to be yourself: clear, relaxed and with confidence.',

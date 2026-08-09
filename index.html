@@ -590,12 +590,20 @@
 
   .over-grid {
     display: grid;
-    grid-template-columns: 300px 1fr;
+    grid-template-columns: 340px 1fr;
     gap: 3.5rem;
     align-items: start;
   }
 
   .over-photo-wrapper { position: relative; }
+  .over-photo-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: 6px;
+    background: transparent;
+  }
   .over-photo-wrapper::before {
     content: '';
     position: absolute;
@@ -611,13 +619,16 @@
 
   .over-photo {
     width: 100%;
-    aspect-ratio: 3/4;
+    aspect-ratio: 864 / 1184;
     object-fit: cover;
-    object-position: center top;
+    object-position: center 18%;
     border-radius: 6px;
     position: relative;
     z-index: 1;
     display: block;
+    pointer-events: none;
+    -webkit-user-drag: none;
+    user-select: none;
   }
 
   /* ─── AANPAK ─── */
@@ -1594,7 +1605,7 @@
     section { padding: 4.5rem 1.5rem; }
     .section-title { font-size: 1.85rem; }
     .over-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-    .over-photo-wrapper { max-width: 260px; }
+    .over-photo-wrapper { max-width: 300px; }
     .vaardigheid-item { grid-template-columns: 1fr; gap: 0.5rem; }
     .succes-quote { padding: 2rem 1.5rem; }
     .succes-quote p { font-size: 1.3rem; }
@@ -1703,7 +1714,7 @@
   <div class="container">
     <div class="over-grid">
       <div class="over-photo-wrapper fade-in">
-        <img src="beeldmateriaal/pepijn-portrait.webp" width="864" height="1184" data-i18n-alt="over.img_alt" alt="Pepijn Jansen, presentatie- en sprekerscoach uit Oldeberkoop" class="over-photo" loading="lazy" />
+        <img src="beeldmateriaal/pepijn-portrait.webp" width="864" height="1184" data-i18n-alt="over.img_alt" alt="Pepijn Jansen, presentatie- en sprekerscoach uit Oldeberkoop, zittend aan een tafel, vriendelijk glimlachend" class="over-photo" loading="lazy" draggable="false" oncontextmenu="return false" />
       </div>
       <div class="fade-in">
         <div class="section-label" data-i18n="over.label">Over Pepijn</div>
