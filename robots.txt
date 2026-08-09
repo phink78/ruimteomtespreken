@@ -1,6 +1,12 @@
 User-agent: *
 Allow: /
 
+# Verborgen bestanden — niet indexeren
+Disallow: /index1.html
+Disallow: /oude%20files%20onepager/
+Disallow: /wix-backend-setup.md
+Disallow: /wix-http-function.js
+
 # AI Search Crawlers — Generative Engine Optimization
 User-agent: GPTBot
 Allow: /

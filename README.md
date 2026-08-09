@@ -203,6 +203,7 @@ Als HTTPS kapot gaat:
 1. Controleer A-records — verwijder alles dat niet in de lijst hierboven staat
 2. Verwijder CNAME-bestand tijdelijk uit repo en push, wacht 15s, voeg opnieuw toe en push
 3. Controleer via: `gh api repos/phink78/ruimteomtespreken/pages` → `https_certificate.state` moet `approved` worden
+4. Zodra approved: `gh api --method PUT repos/phink78/ruimteomtespreken/pages -f build_type=legacy -f cname="ruimteomtespreken.nl" -F https_enforced=true`
 
 ---
 
