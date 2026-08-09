@@ -61,7 +61,7 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "ProfessionalService",
+      "@type": ["ProfessionalService", "LocalBusiness"],
       "@id": "https://ruimteomtespreken.nl/#business",
       "name": "Ruimte om te spreken",
       "legalName": "Tisan Events",
@@ -91,7 +91,11 @@
       "founder": {
         "@id": "https://ruimteomtespreken.nl/#pepijn"
       },
-      "areaServed": "NL",
+      "areaServed": [
+        {"@type": "AdministrativeArea", "name": "Friesland"},
+        {"@type": "Country", "name": "Nederland"},
+        "Online (heel Nederland)"
+      ],
       "serviceType": [
         "Presentatiecoaching",
         "Sprekerscoaching",
@@ -142,7 +146,15 @@
             "bestRating": "5"
           }
         }
-      ]
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "reviewCount": "3",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "hasMap": "https://maps.google.com/maps?q=Schuinpad+34,+8421+PX+Oldeberkoop"
     },
     {
       "@type": "Person",
@@ -157,6 +169,15 @@
       "sameAs": [
         "https://www.linkedin.com/in/pepijnjansen1/",
         "https://www.instagram.com/pepijntisan"
+      ],
+      "description": "Pepijn Jansen is een presentatie- en sprekerscoach uit Oldeberkoop, Friesland. Met een achtergrond als professioneel zanger en performer begeleidt hij mensen bij het vinden van hun eigen stem — individueel, in groepen en voor organisaties.",
+      "knowsAbout": [
+        "Presentatiecoaching",
+        "Sprekerscoaching",
+        "Stemcoaching",
+        "Communicatietraining",
+        "Omgaan met spreekangst",
+        "Lichaamstaal en aanwezigheid"
       ]
     },
     {
@@ -167,6 +188,20 @@
       "inLanguage": "nl",
       "publisher": {
         "@id": "https://ruimteomtespreken.nl/#business"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://ruimteomtespreken.nl/#webpage",
+      "url": "https://ruimteomtespreken.nl",
+      "name": "Ruimte om te spreken — Presentatie- en sprekerscoaching door Pepijn Jansen",
+      "description": "Leren spreken met rust, helderheid en vertrouwen. Sprekerscoaching door Pepijn Jansen in Oldeberkoop, op locatie of online.",
+      "inLanguage": "nl",
+      "isPartOf": {"@id": "https://ruimteomtespreken.nl/#website"},
+      "about": {"@id": "https://ruimteomtespreken.nl/#business"},
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": ["h1", ".hero p", ".section-title", ".breaker-quote"]
       }
     }
   ]
